@@ -6,15 +6,15 @@
 
 @section('section')
 
-<section class="title">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col col-11 Center">
-                <h4 class="glitch text-capitalize" data-text="Add Speaking Language">
-                    <a href="{{ route('home') }}">{{ __('Dashboard') }} &#8827;</a> <a href="{{ route('langs.show') }}">{{ __('Speaking Language') }} &#8827;</a> {{ __('Add Speaking Language') }}
-                </h4>
-            </div>
-        </div>
+<section class="breadcrumb-nav">
+    <div class="container">
+        <h4>
+            <a href="{{ route('home') }}">{{ __('Dashboard') }}</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="{{ route('langs.show') }}">{{ __('Speaking Language') }}</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>{{ __('Add Speaking Language') }}</span>
+        </h4>
     </div>
 </section>
 
@@ -44,7 +44,7 @@
                                 <div class="col">
                                     <div class="input-group">
                                         <select class="form-control" name="level" id="level" required>
-                                            <option class="text-uppercase text-center" selected="true" disabled="disabled">{{ __('- Chooce Your Level -') }}</option>
+                                            <option class="text-uppercase text-center" selected="selected" disabled="disabled">{{ __('- Chooce Your Level -') }}</option>
                                             @for ($i = 0; $i < 6; $i++)
                                                 <option value="Level {{ $i }}">{{ __('Level ') . $i }}</option>
                                             @endfor

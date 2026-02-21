@@ -6,15 +6,15 @@
 
 @section('section')
 
-<section class="title">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col col-11 Center">
-                <h4 class="glitch text-capitalize" data-text="personal info">
-                    <a href="{{ route('home') }}">{{ __('Dashboard') }} &#8827;</a> <a href="{{ route('info.show') }}">{{ __('Personal Info') }} &#8827;</a> {{ __('edit personal info') }}
-                </h4>
-            </div>
-        </div>
+<section class="breadcrumb-nav">
+    <div class="container">
+        <h4>
+            <a href="{{ route('home') }}">{{ __('Dashboard') }}</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="{{ route('info.show') }}">{{ __('Personal Info') }}</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>{{ __('Edit Personal Info') }}</span>
+        </h4>
     </div>
 </section>
 

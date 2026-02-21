@@ -6,15 +6,15 @@
 
 @section('section')
 
-<section class="title">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col col-11 Center">
-                <h4 class="glitch text-capitalize" data-text="Add Skill">
-                    <a href="{{ route('home') }}">{{ __('Dashboard') }} &#8827;</a> <a href="{{ route('skills.show') }}">{{ __('Skills') }} &#8827;</a> {{ __('Update Skill') }}
-                </h4>
-            </div>
-        </div>
+<section class="breadcrumb-nav">
+    <div class="container">
+        <h4>
+            <a href="{{ route('home') }}">{{ __('Dashboard') }}</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="{{ route('skills.show') }}">{{ __('Skills') }}</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>{{ __('Update Skill') }}</span>
+        </h4>
     </div>
 </section>
 
@@ -43,14 +43,14 @@
                                 <div class="col">
                                     <div class="input-group">
                                         <select class="form-control" name="type" id="type" required>
-                                            <option class="text-uppercase text-center" selected="true" disabled="disabled">{{ __('- Skill Type -') }}</option>
+                                            <option class="text-uppercase text-center" selected="selected" disabled="disabled">{{ __('- Skill Type -') }}</option>
                                             @php
                                                 $types = ['Backend', 'Fontend', 'Database', 'Little Knowledge', 'Prior Knowledge', 'Other Skills']
                                             @endphp
                                             @foreach ($types as $type)
                                                 <option value="{{ $type }}"
                                                 @if ($skill->type == $type)
-                                                    selected="true"
+                                                    selected="selected"
                                                 @endif
                                                 >{{ $type }}</option>
                                             @endforeach

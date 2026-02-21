@@ -1,64 +1,181 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Mohablog - Personal Portfolio
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern Laravel-based portfolio website with an admin dashboard for managing personal information, skills, projects, and work experience.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- 🎨 Modern, responsive UI with smooth animations
+- 📱 Mobile-friendly design
+- 🔐 Admin dashboard for content management
+- 📄 PDF CV generation
+- 🌐 Multi-language support
+- 🐳 Docker containerized setup
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Backend:** Laravel 9, PHP 8.1
+- **Frontend:** Bootstrap 5, Custom CSS
+- **Database:** MySQL 8.0
+- **Containerization:** Docker & Docker Compose
 
-## Learning Laravel
+## Quick Start
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Prerequisites
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Docker & Docker Compose
+- Make (optional, for using Makefile commands)
 
-## Laravel Sponsors
+### Installation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd mohablog
+```
 
-### Premium Partners
+2. Run setup:
+```bash
+make setup
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+This will:
+- Create `.env` file
+- Build Docker containers
+- Install dependencies
+- Generate application key
+- Run migrations
+- Seed database
+- Create storage link
 
-## Contributing
+The application will automatically find available ports (starting from 8000).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Manual Setup
 
-## Code of Conduct
+If you prefer manual setup:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+# Copy environment file
+cp .env.example .env
 
-## Security Vulnerabilities
+# Update .env with your database settings
+# DB_HOST=<your-mysql-container>
+# DB_DATABASE=mohablog
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Build and start containers
+docker-compose up -d --build
+
+# Install dependencies
+docker exec -it mohablog-app composer install
+
+# Generate key
+docker exec -it mohablog-app php artisan key:generate
+
+# Run migrations
+docker exec -it mohablog-app php artisan migrate
+
+# Import database (optional)
+docker exec -i <mysql-container> mysql -uroot -p<password> mohablog < mohablog.sql
+
+# Fix permissions
+docker exec -it mohablog-app chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+docker exec -it mohablog-app chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+```
+
+## Makefile Commands
+
+```bash
+make help              # Show all available commands
+make setup             # Initial environment setup
+make build             # Build Docker containers
+make up                # Start services
+make down              # Stop services
+make restart           # Restart services
+make shell             # Access app container shell
+make logs              # View Laravel logs
+```
+
+## Project Structure
+
+```
+mohablog/
+├── app/
+│   ├── Console/Commands/     # Custom artisan commands
+│   ├── Http/Controllers/     # Application controllers
+│   └── Models/               # Eloquent models
+├── resources/
+│   └── views/
+│       ├── Admin/            # Admin dashboard views
+│       ├── layouts/          # Layout templates
+│       └── index.blade.php   # Portfolio homepage
+├── public/
+│   ├── css/                  # Stylesheets
+│   └── js/                   # JavaScript files
+├── docker-compose.yml        # Docker services configuration
+├── Dockerfile                # PHP-FPM container
+└── Makefile                  # Development commands
+```
+
+## Features Overview
+
+### Portfolio (Public)
+- Hero section with social links
+- About me section
+- Skills showcase with categories
+- Project portfolio
+- Work experience timeline
+- Language proficiency
+- Downloadable CV
+
+### Admin Dashboard
+- Personal information management
+- Skills CRUD operations
+- Projects management
+- Work experience tracking
+- Speaking languages management
+
+## Configuration
+
+### Database
+The project is configured to use a shared MySQL container. Update `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=<mysql-container-name>
+DB_PORT=3306
+DB_DATABASE=mohablog
+DB_USERNAME=root
+DB_PASSWORD=root
+```
+
+### Ports
+- Web: Auto-detected (8000-8100)
+- Database: Shared container on 3306
+
+## Custom Commands
+
+```bash
+# Generate seed data
+php artisan generate:seed
+
+# Create new seeder
+php artisan make:seeder <name>
+```
+
+## Development
+
+Access the application:
+- **Portfolio:** http://localhost:<port>
+- **Admin Dashboard:** http://localhost:<port>/login
+
+Default admin credentials are set during seeding.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT License - see LICENSE file for details.
+
+## Author
+
+Mohab Mamdouh Abd El-Twab
+- GitHub: [@MohabsMamdouh](https://github.com/MohabsMamdouh)
+- LinkedIn: [mohab-mamdouh](https://linkedin.com/in/mohab-mamdouh-9307a57b/)
+- Email: mohabmamdouh22@gmail.com

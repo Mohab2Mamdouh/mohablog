@@ -6,97 +6,285 @@
 
 @section('section')
 
-<section class="title">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col col-11 Center">
-                <h4 class="glitch text-capitalize" data-text="Projects">
-                    <a href="{{ route('home') }}">{{ __('Dashboard') }} &#8827;</a> {{ __('Projects') }}
-                </h4>
-            </div>
-        </div>
+<style>
+    .project-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 0;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border: 2px solid transparent;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    .project-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #6366f1, #ec4899);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+    }
+
+    .project-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .project-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 50px rgba(99,102,241,0.2);
+        border-color: rgba(99,102,241,0.2);
+    }
+
+    .project-header {
+        padding: 25px 30px;
+        background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(236,72,153,0.05));
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .project-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+    }
+
+    .project-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .project-body {
+        padding: 30px;
+    }
+
+    .project-link {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px 0;
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+
+    .project-link i {
+        color: #6366f1;
+        font-size: 1.2rem;
+        margin-top: 3px;
+    }
+
+    .project-link a {
+        color: #6366f1;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        word-break: break-all;
+    }
+
+    .project-link a:hover {
+        color: #ec4899;
+    }
+
+    .project-description {
+        color: #64748b;
+        line-height: 1.7;
+        margin: 20px 0;
+    }
+
+    .project-tech {
+        background: rgba(99,102,241,0.05);
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin: 20px 0;
+    }
+
+    .project-tech strong {
+        color: #0f172a;
+        font-weight: 700;
+    }
+
+    .project-tech span {
+        color: #64748b;
+    }
+
+    .project-footer {
+        padding: 15px 30px;
+        background: #f8fafc;
+        border-top: 1px solid #f1f5f9;
+        color: #94a3b8;
+        font-size: 0.9rem;
+    }
+
+    .delete-modal {
+        background: #fff;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        max-width: 500px;
+        animation: zoomIn 0.3s ease;
+    }
+
+    .delete-modal h5 {
+        color: #0f172a;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .delete-modal-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .delete-modal-actions a {
+        flex: 1;
+        padding: 14px;
+        border-radius: 12px;
+        text-align: center;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-confirm-delete {
+        background: #ef4444;
+        color: #fff;
+    }
+
+    .btn-confirm-delete:hover {
+        background: #dc2626;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(239,68,68,0.4);
+    }
+
+    .btn-cancel {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    .btn-cancel:hover {
+        background: #e2e8f0;
+        color: #0f172a;
+    }
+</style>
+
+<section class="breadcrumb-nav">
+    <div class="container">
+        <h4>
+            <a href="{{ route('home') }}">{{ __('Dashboard') }}</a> 
+            <i class="fas fa-chevron-right" style="font-size: 0.8rem; color: #94a3b8;"></i> 
+            <span style="color: #64748b;">{{ __('Projects') }}</span>
+        </h4>
     </div>
 </section>
 
-<div class="buttons">
-    <div class="row">
-        <div class="col">
-            <a href="{{ route('projects.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> {{ __('Add Project') }}</a>
-        </div>
+<div class="action-bar">
+    <div class="container">
+        <a href="{{ route('projects.create') }}" class="btn-add">
+            <i class="fa-solid fa-plus"></i> {{ __('Add Project') }}
+        </a>
     </div>
 </div>
 
 <section class="content">
     <div class="container">
-        <div class="card-deck row">
-            @for ($i = 0; $i < count($projects); $i++)
-                @if ($i % 2 == 0)
-                    </div>
-                    <div class="card-deck row">
-                @endif
-
-                <div class="card col-xl-6">
-                    <div class="card-body">
-                        <div class="row">
-                            <h5 class="card-title col font-weight-bold text-uppercase">{{ $projects[$i]->name }}</h5>
-                            <div class="col-1 text-end update">
-                                <a class="text-success" href="{{ route('projects.edit', ['id' => $projects[$i]->id]) }}" title="Update Project"><i class="fa-solid fa-edit"></i></a>
-                            </div>
-                            <div class="col-1 text-end remove">
-                                <a class="text-danger open-button" onclick="openForm{{ $i }}()" id="delete-2" href="#" title="Delete Skill"><i class="fa-solid fa-trash"></i></a>
+        <div class="row">
+            @forelse ($projects as $project)
+                <div class="col-lg-6">
+                    <div class="project-card">
+                        <div class="project-header">
+                            <h5 class="project-title">{{ $project->name }}</h5>
+                            <div class="project-actions">
+                                <a class="btn-sm-edit" href="{{ route('projects.edit', ['id' => $project->id]) }}">
+                                    <i class="fa-solid fa-edit"></i> Edit
+                                </a>
+                                <a class="btn-sm-delete open-button" onclick="openForm{{ $loop->index }}()" href="#">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </a>
                             </div>
                         </div>
-                        <h6>{{ __('Github:') }} <a href="{{ $projects[$i]->url }}">{{ $projects[$i]->url }}</a></h6>
-                        <h6>{{ __('App URL:') }} <a href="{{ $projects[$i]->appURL }}">{{ $projects[$i]->appURL }}</a></h6>
-                        <p class="card-text">{{ $projects[$i]->caption }}</p>
-                        <p class="card-text"><b>{{ __('Technology Stack: ') }}</b>{{ $projects[$i]->techmologyStack }}</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">{{ __('Created at ') . $projects[$i]->endDate }}</small>
+                        
+                        <div class="project-body">
+                            <div class="project-link">
+                                <i class="fab fa-github"></i>
+                                <div>
+                                    <strong>GitHub:</strong><br>
+                                    <a href="{{ $project->url }}" target="_blank">{{ $project->url }}</a>
+                                </div>
+                            </div>
+                            
+                            @if($project->appURL)
+                                <div class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    <div>
+                                        <strong>Live URL:</strong><br>
+                                        <a href="{{ $project->appURL }}" target="_blank">{{ $project->appURL }}</a>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <p class="project-description">{{ $project->caption }}</p>
+                            
+                            <div class="project-tech">
+                                <strong>Technology Stack:</strong> <span>{{ $project->techmologyStack }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-footer">
+                            <i class="far fa-calendar"></i> {{ __('Created at ') . $project->endDate }}
+                        </div>
                     </div>
                 </div>
-            @endfor
+            @empty
+                <div class="col-12">
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <h4>{{ __('No Projects Yet') }}</h4>
+                        <p>{{ __('Start by adding your first project') }}</p>
+                    </div>
+                </div>
+            @endforelse
         </div>
     </div>
 </section>
 
 <div class="overlay"></div>
 
-@for ($i = 0; $i < count($projects); $i++)
-    <div class="form-popup" id="myForm_{{ $i }}">
-        <div class="card border-danger mb-3" style="max-width: 60rem;">
-            <div class="card-header">{{ $projects[$i]->name }}</div>
-            <div class="card-body text-danger">
-                <h5 class="card-title">{{ __('Delete the project "') . $projects[$i]->name . '"?' }}</h5>
-                <p class="card-text">
-                    <a href="{{ route('projects.delete', ['id' => $projects[$i]->id]) }}" class="card-link">{{ __('Delete') }}</a>
-                    <a href="#" class="card-link cancel" onclick="closeForm{{ $i }}()">{{ __('Cancel') }}</a>
-                </p>
+@foreach ($projects as $project)
+    <div class="form-popup" id="myForm_{{ $loop->index }}">
+        <div class="delete-modal">
+            <h5>{{ __('Delete Project?') }}</h5>
+            <p style="color: #64748b;">{{ __('Are you sure you want to delete "') . $project->name . '"? This action cannot be undone.' }}</p>
+            <div class="delete-modal-actions">
+                <a href="{{ route('projects.delete', ['id' => $project->id]) }}" class="btn-confirm-delete">
+                    <i class="fas fa-trash"></i> {{ __('Delete') }}
+                </a>
+                <a href="#" class="btn-cancel" onclick="closeForm{{ $loop->index }}()">
+                    {{ __('Cancel') }}
+                </a>
             </div>
         </div>
     </div>
     <script>
-        $('.overlay').css('height', $('body').css('height'));
-        function openForm{{ $i }}() {
-            for (let index = 0; index < {{count($projects)}}; index++) {
-                if (index == {{$i}}) {
-                    continue;
-                }
-                console.log(index);
-                $('#myForm_' + index).css('display', 'none');
-            }
-            $('#myForm_' + {{ $i }}).css('display', 'block');
-            $('.overlay').css('display', 'block');
-
+        function openForm{{ $loop->index }}() {
+            document.querySelectorAll('.form-popup').forEach(el => el.style.display = 'none');
+            document.getElementById('myForm_{{ $loop->index }}').style.display = 'block';
+            document.querySelector('.overlay').style.display = 'block';
         }
 
-        function closeForm{{ $i }}() {
-            $('#myForm_' + {{ $i }}).css('display', 'none');
-            $('.overlay').css('display', 'none');
+        function closeForm{{ $loop->index }}() {
+            document.getElementById('myForm_{{ $loop->index }}').style.display = 'none';
+            document.querySelector('.overlay').style.display = 'none';
         }
     </script>
-@endfor
-
-
+@endforeach
 
 @endsection

@@ -6,15 +6,13 @@
 
 @section('section')
 
-<section class="title">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col col-11 Center">
-                <h4 class="glitch text-capitalize" data-text="Speaking Language">
-                    <a href="{{ route('home') }}">{{ __('Dashboard') }} &#8827;</a> {{ __('Speaking Language') }}
-                </h4>
-            </div>
-        </div>
+<section class="breadcrumb-nav">
+    <div class="container">
+        <h4>
+            <a href="{{ route('home') }}">{{ __('Dashboard') }}</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>{{ __('Speaking Language') }}</span>
+        </h4>
     </div>
 </section>
 
@@ -49,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="row confirm confirmation-update d-none">
-                                <div class="card col" style="padding: 0px;margin-bottom: 15px;">
+                                <div class="card col" style="padding: 0;margin-bottom: 15px;">
                                     <h5 class="card-header alert alert-success alert-dismissible fade show" style="color: rgb(62, 185, 62);font-weight: bold;">{{ __('Update Skill') }}</h5>
                                     <div class="card-body" style="margin: 0;" role="alert">
                                         <h5 class="card-title" style="color: #888">{{ __('Update ') . $langs[$i]->languageName }}</h5>
@@ -69,11 +67,11 @@
                                                     <div class="col">
                                                         <div class="input-group">
                                                             <select class="form-control" name="level" id="level" required>
-                                                                <option class="text-uppercase text-center" selected="true" disabled="disabled">{{ __('- Chooce Your Level -') }}</option>
+                                                                <option class="text-uppercase text-center" selected="selected" disabled="disabled">{{ __('- Chooce Your Level -') }}</option>
                                                                 @for ($x = 0; $x < 6; $x++)
                                                                     <option value="Level {{ $x }}"
                                                                     @if ($langs[$i]->level == "Level ".$x)
-                                                                        selected="true"
+                                                                        selected="selected"
                                                                     @endif
                                                                     >{{ __('Level ') . $x }}</option>
                                                                 @endfor
@@ -92,7 +90,6 @@
                                                     </div>
                                                 </div>
                                             </form>
-                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -126,23 +123,24 @@
         </div>
     </div>
     <script>
-        $('.overlay').css('height', $('body').css('height'));
+        let overlay = $('.overlay');
+        overlay.css('height', $('body').css('height'));
         function openForm{{ $i }}() {
             for (let index = 0; index < {{count($langs)}}; index++) {
-                if (index == {{$i}}) {
+                if (index === {{$i}}) {
                     continue;
                 }
                 console.log(index);
                 $('#myForm_' + index).css('display', 'none');
             }
             $('#myForm_' + {{ $i }}).css('display', 'block');
-            $('.overlay').css('display', 'block');
+            overlay.css('display', 'block');
 
         }
 
         function closeForm{{ $i }}() {
             $('#myForm_' + {{ $i }}).css('display', 'none');
-            $('.overlay').css('display', 'none');
+            overlay.css('display', 'none');
         }
     </script>
 @endfor

@@ -6,15 +6,13 @@
 
 @section('section')
 
-<section class="title">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col col-11 Center">
-                <h4 class="glitch text-capitalize" data-text="Work Experience">
-                    <a href="{{ route('home') }}">{{ __('Dashboard') }} &#8827;</a> {{ __('Work Experience') }}
-                </h4>
-            </div>
-        </div>
+<section class="breadcrumb-nav">
+    <div class="container">
+        <h4>
+            <a href="{{ route('home') }}">{{ __('Dashboard') }}</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>{{ __('Work Experience') }}</span>
+        </h4>
     </div>
 </section>
 
@@ -56,7 +54,7 @@
                                 {{ $works[$i]->current }}
                             @else
                                 {{ date("F Y", strtotime($works[$i]->endDate)) }}
-                            @endforelse
+                            @endif
                         </small>
                     </div>
                 </div>
@@ -81,23 +79,24 @@
         </div>
     </div>
     <script>
-        $('.overlay').css('height', $('body').css('height'));
+        let overlay = $('.overlay');
+        overlay.css('height', $('body').css('height'));
         function openForm{{ $i }}() {
             for (let index = 0; index < {{count($works)}}; index++) {
-                if (index == {{$i}}) {
+                if (index === {{$i}}) {
                     continue;
                 }
                 console.log(index);
                 $('#myForm_' + index).css('display', 'none');
             }
             $('#myForm_' + {{ $i }}).css('display', 'block');
-            $('.overlay').css('display', 'block');
+            overlay.css('display', 'block');
 
         }
 
         function closeForm{{ $i }}() {
             $('#myForm_' + {{ $i }}).css('display', 'none');
-            $('.overlay').css('display', 'none');
+            overlay.css('display', 'none');
         }
     </script>
 @endfor

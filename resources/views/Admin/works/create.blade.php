@@ -6,15 +6,15 @@
 
 @section('section')
 
-<section class="title">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col col-11 Center">
-                <h4 class="glitch text-capitalize" data-text="Work Experiences">
-                    <a href="{{ route('home') }}">{{ __('Dashboard') }} &#8827;</a> <a href="{{ route('works.show') }}">{{ __('Work Experiences') }} &#8827;</a> {{ __('Add Work Experience') }}
-                </h4>
-            </div>
-        </div>
+<section class="breadcrumb-nav">
+    <div class="container">
+        <h4>
+            <a href="{{ route('home') }}">{{ __('Dashboard') }}</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="{{ route('works.show') }}">{{ __('Work Experiences') }}</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>{{ __('Add Work Experience') }}</span>
+        </h4>
     </div>
 </section>
 
@@ -99,11 +99,12 @@
 
 <script>
     function Disable() {
-        if ($('#present').prop('checked') == true) {
-            $('#endDate').prop('disabled', true);
-            $('#endDate').val(null);
+        let endDate = $('#endDate');
+        if ($('#present').prop('checked') === true) {
+            endDate.prop('disabled', true);
+            endDate.val(null);
         } else {
-            $('#endDate').prop('disabled', false);
+            endDate.prop('disabled', false);
         }
     }
 </script>

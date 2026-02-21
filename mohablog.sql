@@ -24,6 +24,26 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Drop existing tables
+--
+
+DROP TABLE IF EXISTS `extensions`;
+DROP TABLE IF EXISTS `failed_jobs`;
+DROP TABLE IF EXISTS `feed_backs`;
+DROP TABLE IF EXISTS `migrations`;
+DROP TABLE IF EXISTS `password_resets`;
+DROP TABLE IF EXISTS `personal_access_tokens`;
+DROP TABLE IF EXISTS `projects`;
+DROP TABLE IF EXISTS `seeders`;
+DROP TABLE IF EXISTS `site_details`;
+DROP TABLE IF EXISTS `skills`;
+DROP TABLE IF EXISTS `speaking_languages`;
+DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `work_exps`;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `extensions`
 --
 
@@ -455,6 +475,27 @@ ALTER TABLE `users`
 --
 ALTER TABLE `work_exps`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `seeders`
+--
+
+CREATE TABLE `seeders` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `seeder` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `seeders`
+--
+
+INSERT INTO `seeders` (`id`, `seeder`) VALUES
+(1, '1768602887_SiteDetails'),
+(2, '1768602889_User');
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

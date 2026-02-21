@@ -54,7 +54,7 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, #6366f1, #ec4899);
+            background: linear-gradient(90deg, var(--ramadan-green), var(--ramadan-gold));
             transform: scaleX(0);
             transform-origin: left;
             z-index: 99999;

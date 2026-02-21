@@ -1,11 +1,13 @@
 :root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --accent: #ec4899;
+    --primary: #1a5f3f;
+    --primary-dark: #0f4229;
+    --accent: #d4af37;
     --dark: #0f172a;
     --gray: #64748b;
     --light: #f8fafc;
     --shadow: 0 10px 40px rgba(0,0,0,0.1);
+    --ramadan-gold: #d4af37;
+    --ramadan-green: #1a5f3f;
 }
 
 * {
@@ -16,11 +18,74 @@ html {
     scroll-behavior: smooth;
 }
 
+body::before {
+    content: '🏮';
+    position: fixed;
+    top: 50px;
+    left: 30px;
+    font-size: 50px;
+    opacity: 0.4;
+    z-index: 9999;
+    animation: swingLeft 4s ease-in-out infinite;
+    transform-origin: top center;
+}
+
+body::after {
+    content: '🏮';
+    position: fixed;
+    top: 50px;
+    right: 30px;
+    font-size: 50px;
+    opacity: 0.4;
+    z-index: 9999;
+    animation: swingRight 4s ease-in-out infinite;
+    transform-origin: top center;
+}
+
+html::before {
+    content: '☪';
+    position: fixed;
+    top: 150px;
+    left: 10%;
+    font-size: 35px;
+    color: var(--ramadan-gold);
+    opacity: 0.25;
+    z-index: 9998;
+    animation: rotate360 30s linear infinite;
+}
+
+html::after {
+    content: '☪';
+    position: fixed;
+    top: 200px;
+    right: 10%;
+    font-size: 40px;
+    color: var(--ramadan-gold);
+    opacity: 0.25;
+    z-index: 9998;
+    animation: rotate360 25s linear infinite reverse;
+}
+
+@keyframes swingLeft {
+    0%, 100% { transform: rotate(-8deg); }
+    50% { transform: rotate(8deg); }
+}
+
+@keyframes swingRight {
+    0%, 100% { transform: rotate(8deg); }
+    50% { transform: rotate(-8deg); }
+}
+
+@keyframes glow {
+    0%, 100% { opacity: 0.3; text-shadow: 0 0 10px var(--ramadan-gold); }
+    50% { opacity: 0.6; text-shadow: 0 0 20px var(--ramadan-gold); }
+}
+
 .background-image {
     width: 100%;
     min-height: 450px;
     padding: 100px 50px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    background: linear-gradient(135deg, var(--ramadan-green) 0%, var(--ramadan-gold) 100%);
     position: relative;
     overflow: hidden;
 }
@@ -32,23 +97,44 @@ html {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('https://cdn.pixabay.com/photo/2014/12/30/13/44/programming-583923_960_720.jpg');
-    opacity: 0.08;
-    background-size: cover;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="30" x="10" font-size="20" opacity="0.15">⭐</text><text y="70" x="60" font-size="25" opacity="0.15">✨</text><text y="50" x="80" font-size="18" opacity="0.15">⭐</text></svg>');
+    opacity: 0.3;
+    background-size: 200px;
     animation: slowZoom 20s ease-in-out infinite alternate;
+}
+
+.background-image::after {
+    content: '🏮 ☪ 🏮';
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px;
+    opacity: 0.3;
+    animation: floatUp 3s ease-in-out infinite;
+}
+
+@keyframes floatUp {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
 }
 
 .background-image .profile-info {
     position: relative;
     z-index: 1;
-    animation: fadeInDown 0.8s ease;
+    animation: fadeInDown 0.8s ease, pulse 3s ease-in-out infinite 2s;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
 }
 
 .background-image .profile-title h2 {
     font-size: 3.5rem;
     font-weight: 800;
     letter-spacing: -2px;
-    animation: fadeInUp 0.8s ease 0.2s both;
+    animation: fadeInUp 0.8s ease 0.2s both, glow 2s ease-in-out infinite 1s;
     text-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
@@ -78,6 +164,41 @@ html {
 .portfolio {
     padding: 80px 20px;
     background: var(--light);
+    position: relative;
+    overflow: hidden;
+}
+
+.portfolio::before {
+    content: '⭐ ✨ ⭐ ☪ ✨ ⭐ ☪ ⭐ ✨';
+    position: absolute;
+    top: 5%;
+    left: 0;
+    right: 0;
+    font-size: 20px;
+    opacity: 0.2;
+    text-align: center;
+    letter-spacing: 50px;
+    animation: twinkle 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.portfolio::after {
+    content: '☪ ⭐ ✨ ☪ ⭐ ✨ ☪ ⭐';
+    position: absolute;
+    bottom: 10%;
+    left: 0;
+    right: 0;
+    font-size: 25px;
+    opacity: 0.2;
+    text-align: center;
+    letter-spacing: 60px;
+    animation: twinkle 2.5s ease-in-out infinite 0.5s;
+    pointer-events: none;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.2); }
 }
 
 .portfolio .section .section-content,
@@ -87,7 +208,7 @@ html {
     padding: 40px;
     margin-bottom: 30px;
     border-radius: 20px;
-    border: 1px solid rgba(99,102,241,0.08);
+    border: 2px solid var(--ramadan-gold);
     animation: fadeInUp 0.6s ease both;
     transform-origin: bottom;
     position: relative;
@@ -96,17 +217,42 @@ html {
 
 .portfolio .section .section-content::before,
 .portfolio .side-section .side-section-content::before {
+    content: '🏮';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    opacity: 0.15;
+    animation: swing 3s ease-in-out infinite;
+}
+
+.portfolio .side-section .side-section-content::before {
+    content: '🌙';
+    animation: rotate360 20s linear infinite;
+}
+
+@keyframes swing {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+@keyframes rotate360 {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.portfolio .section .section-content::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 4px;
     height: 0;
-    background: linear-gradient(180deg, var(--primary), var(--accent));
+    background: linear-gradient(180deg, var(--ramadan-green), var(--ramadan-gold));
     transition: height 0.4s ease;
 }
 
-.portfolio .section .section-content:hover::before,
+.portfolio .section .section-content:hover::after,
 .portfolio .side-section .side-section-content:hover::before {
     height: 100%;
 }
@@ -114,8 +260,8 @@ html {
 .portfolio .section .section-content:hover,
 .portfolio .side-section .side-section-content:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 60px rgba(99,102,241,0.2);
-    border-color: rgba(99,102,241,0.2);
+    box-shadow: 0 20px 60px rgba(26,95,63,0.3);
+    border-color: var(--ramadan-gold);
 }
 
 .portfolio .section .section-content h2,
@@ -128,6 +274,16 @@ html {
     padding-bottom: 15px;
 }
 
+.portfolio .section .section-content h2::before {
+    content: '✨';
+    position: absolute;
+    left: -35px;
+    top: 0;
+    font-size: 20px;
+    opacity: 0.4;
+    animation: twinkle 2s ease-in-out infinite;
+}
+
 .portfolio .section .section-content h2::after,
 .portfolio .side-section .side-section-content h2::after {
     content: '';
@@ -136,9 +292,20 @@ html {
     left: 0;
     width: 60px;
     height: 4px;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
+    background: linear-gradient(90deg, var(--ramadan-green), var(--ramadan-gold));
     border-radius: 2px;
     animation: expandWidth 0.6s ease 0.3s both;
+}
+
+.portfolio .side-section .side-section-content h2::before {
+    content: '☪';
+    position: absolute;
+    left: -35px;
+    top: 0;
+    font-size: 22px;
+    color: var(--ramadan-gold);
+    opacity: 0.4;
+    animation: rotate360 20s linear infinite;
 }
 
 .portfolio .section .section-content h5 {

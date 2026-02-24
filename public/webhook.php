@@ -3,7 +3,7 @@
 $secret = 'MOHAB';
 
 // Navigate to the correct project directory
-$projectRoot = dirname(__DIR__) . "/portfolio";
+$projectRoot = dirname(__DIR__, 2) . "/portfolio";
 $deployScript = $projectRoot . "/deploy.sh";
 
 // More reliable way to get headers

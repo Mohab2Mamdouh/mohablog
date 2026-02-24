@@ -47,3 +47,18 @@ Route::get('/artisan/optimize-clear', function () {
     }
 });
 
+Route::get('/artisan/route-clear', function () {
+    try {
+        Artisan::call('route:clear');
+        return response()->json([
+            'status' => 'success',
+            'output' => Artisan::output()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+});
+

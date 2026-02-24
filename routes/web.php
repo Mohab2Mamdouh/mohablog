@@ -31,3 +31,19 @@ Route::controller(UserHomeController::class)->group(function ()
 Route::get('/', [UserHomeController::class, 'index'])->name('portfolio');
 
 Auth::routes();
+
+Route::get('/artisan/optimize-clear', function () {
+    try {
+        Artisan::call('optimize:clear');
+        return response()->json([
+            'status' => 'success',
+            'output' => Artisan::output()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+});
+

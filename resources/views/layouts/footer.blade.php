@@ -10,12 +10,14 @@
                 <a href="{{ route('portfolio') }}">
                     <i class="fas fa-home"></i> Portfolio
                 </a>
-                <a href="{{ $user->github }}" target="_blank">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-                <a href="{{ $user->linked_in }}" target="_blank">
-                    <i class="fab fa-linkedin"></i> LinkedIn
-                </a>
+                @if(isset($user))
+                    <a href="{{ $user->github }}" target="_blank">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                    <a href="{{ $user->linked_in }}" target="_blank">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                @endif
             </div>
             <div class="footer-copyright">
                 © {{ date('Y') }} Mohablog. All rights reserved.

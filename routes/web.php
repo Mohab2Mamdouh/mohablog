@@ -48,7 +48,7 @@ Route::get('/artisan/optimize-clear', function () {
     }
 });
 
-// Route Clear Route
+// Route Clear Route tets
 Route::get('/artisan/route-clear', function () {
     try {
         Artisan::call('route:clear');

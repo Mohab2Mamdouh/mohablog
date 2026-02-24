@@ -97,7 +97,7 @@ error_log("Deploy Script: " . $deployScript);
 error_log("Return Code: " . $returnCode);
 error_log("Output: " . $fullOutput);
 
-// Return appropriate HTTP status
+// Return appropriate HTTP status test
 if ($returnCode === 0) {
     http_response_code(200);
     echo 'Webhook received successfully - Deployment successful!';

@@ -1,7 +1,10 @@
 <?php
 // webhook.php - GitHub webhook listener
 $secret = 'MOHAB';
-
+$allHeaders = array_filter($_SERVER, function($key) {
+    return strpos($key, 'HTTP_') === 0;
+}, ARRAY_FILTER_USE_KEY);
+error_log("All HTTP headers: " . print_r($allHeaders, true));
 // Navigate to the correct project directory
 $projectRoot = dirname(__DIR__, 2) . "/portfolio";
 $deployScript = $projectRoot . "/deploy.sh";

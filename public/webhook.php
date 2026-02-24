@@ -1,10 +1,7 @@
 <?php
 // webhook.php - GitHub webhook listener
 $secret = 'MOHAB';
-$allHeaders = array_filter($_SERVER, function($key) {
-    return strpos($key, 'HTTP_') === 0;
-}, ARRAY_FILTER_USE_KEY);
-error_log("All HTTP headers: " . print_r($allHeaders, true));
+
 // Navigate to the correct project directory
 $projectRoot = dirname(__DIR__, 2) . "/portfolio";
 $deployScript = $projectRoot . "/deploy.sh";
@@ -98,12 +95,6 @@ error_log("Return Code: " . $returnCode);
 error_log("Output: " . $fullOutput);
 
 // Return appropriate HTTP status test
-if ($returnCode === 0) {
-    http_response_code(200);
-    echo 'Webhook received successfully - Deployment successful!';
-} else {
-    http_response_code(500);
-    echo 'Webhook received - Deployment failed (check logs)';
-    error_log("Deployment FAILED with return code: " . $returnCode);
-}
-
+http_response_code(200);
+echo "Return Code: " . $returnCode . "\n";
+echo "Output:\n" . $fullOutput;

@@ -64,3 +64,19 @@ Route::get('/artisan/route-clear', function () {
     }
 });
 
+// cache Clear cache tets
+Route::get('/artisan/cache-clear', function () {
+    try {
+        Artisan::call('cache:clear');
+        return response()->json([
+            'status' => 'success',
+            'output' => Artisan::output()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+});
+

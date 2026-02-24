@@ -3,11 +3,14 @@
 namespace Illuminate\Filesystem;
 
 use Aws\S3\S3Client;
-use League\Flysystem\AwsS3V3\AwsS3V3Adapter as S3Adapter;
+use Illuminate\Support\Traits\Conditionable;
+use League\Flysystem\FilesystemAdapter as FlysystemAdapter;
 use League\Flysystem\FilesystemOperator;
 
 class AwsS3V3Adapter extends FilesystemAdapter
 {
+    use Conditionable;
+
     /**
      * The AWS S3 client.
      *
@@ -19,13 +22,14 @@ class AwsS3V3Adapter extends FilesystemAdapter
      * Create a new AwsS3V3FilesystemAdapter instance.
      *
      * @param  \League\Flysystem\FilesystemOperator  $driver
-     * @param  \League\Flysystem\AwsS3V3\AwsS3V3Adapter  $adapter
+     * @param  \League\Flysystem\FilesystemAdapter  $adapter
      * @param  array  $config
      * @param  \Aws\S3\S3Client  $client
-     * @return void
      */
-    public function __construct(FilesystemOperator $driver, S3Adapter $adapter, array $config, S3Client $client)
+    public function __construct(FilesystemOperator $driver, FlysystemAdapter $adapter, array $config, S3Client $client)
     {
+        $config['directory_separator'] = '/';
+
         parent::__construct($driver, $adapter, $config);
 
         $this->client = $client;
@@ -51,6 +55,16 @@ class AwsS3V3Adapter extends FilesystemAdapter
         return $this->client->getObjectUrl(
             $this->config['bucket'], $this->prefixer->prefixPath($path)
         );
+    }
+
+    /**
+     * Determine if temporary URLs can be generated.
+     *
+     * @return bool
+     */
+    public function providesTemporaryUrls()
+    {
+        return true;
     }
 
     /**
@@ -80,6 +94,40 @@ class AwsS3V3Adapter extends FilesystemAdapter
         }
 
         return (string) $uri;
+    }
+
+    /**
+     * Get a temporary upload URL for the file at the given path.
+     *
+     * @param  string  $path
+     * @param  \DateTimeInterface  $expiration
+     * @param  array  $options
+     * @return array
+     */
+    public function temporaryUploadUrl($path, $expiration, array $options = [])
+    {
+        $command = $this->client->getCommand('PutObject', array_merge([
+            'Bucket' => $this->config['bucket'],
+            'Key' => $this->prefixer->prefixPath($path),
+        ], $options));
+
+        $signedRequest = $this->client->createPresignedRequest(
+            $command, $expiration, $options
+        );
+
+        $uri = $signedRequest->getUri();
+
+        // If an explicit base URL has been set on the disk configuration then we will use
+        // it as the base URL instead of the default path. This allows the developer to
+        // have full control over the base path for this filesystem's generated URLs.
+        if (isset($this->config['temporary_url'])) {
+            $uri = $this->replaceBaseUrl($uri, $this->config['temporary_url']);
+        }
+
+        return [
+            'url' => (string) $uri,
+            'headers' => $signedRequest->getHeaders(),
+        ];
     }
 
     /**

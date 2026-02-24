@@ -2,6 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\UserApiController;
+use App\Http\Controllers\Api\SpeakingLanguageApiController;
+use App\Http\Controllers\Api\SkillsApiController;
+use App\Http\Controllers\Api\ProjectsApiController;
+use App\Http\Controllers\Api\WorkExpsApiController;
+use App\Http\Controllers\Api\FeedbackApiController;
 
 /*
 |--------------------------------------------------------------------------

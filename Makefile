@@ -99,8 +99,8 @@ build:
 
 up:
 	@echo "$(BLUE)Starting $(PROJECT_NAME)...$(NC)"
-	@docker compose up -d
-	@echo "$(GREEN)✓ Services started$(NC)"
+	@PORT=$(AVAILABLE_PORT) docker compose up -d
+	@echo "$(GREEN)✓ Services started on http://localhost:$(AVAILABLE_PORT)$(NC)"
 
 down:
 	@echo "$(BLUE)Stopping $(PROJECT_NAME)...$(NC)"

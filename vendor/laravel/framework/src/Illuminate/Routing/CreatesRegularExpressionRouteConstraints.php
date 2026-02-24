@@ -2,7 +2,9 @@
 
 namespace Illuminate\Routing;
 
-use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+
+use function Illuminate\Support\enum_value;
 
 trait CreatesRegularExpressionRouteConstraints
 {
@@ -40,6 +42,17 @@ trait CreatesRegularExpressionRouteConstraints
     }
 
     /**
+     * Specify that the given route parameters must be ULIDs.
+     *
+     * @param  array|string  $parameters
+     * @return $this
+     */
+    public function whereUlid($parameters)
+    {
+        return $this->assignExpressionToParameters($parameters, '[0-7][0-9a-hjkmnp-tv-zA-HJKMNP-TV-Z]{25}');
+    }
+
+    /**
      * Specify that the given route parameters must be UUIDs.
      *
      * @param  array|string  $parameters
@@ -59,7 +72,12 @@ trait CreatesRegularExpressionRouteConstraints
      */
     public function whereIn($parameters, array $values)
     {
-        return $this->assignExpressionToParameters($parameters, implode('|', $values));
+        return $this->assignExpressionToParameters(
+            $parameters,
+            (new Collection($values))
+                ->map(fn ($value) => enum_value($value))
+                ->implode('|')
+        );
     }
 
     /**
@@ -71,8 +89,8 @@ trait CreatesRegularExpressionRouteConstraints
      */
     protected function assignExpressionToParameters($parameters, $expression)
     {
-        return $this->where(collect(Arr::wrap($parameters))
-                    ->mapWithKeys(fn ($parameter) => [$parameter => $expression])
-                    ->all());
+        return $this->where(Collection::wrap($parameters)
+            ->mapWithKeys(fn ($parameter) => [$parameter => $expression])
+            ->all());
     }
 }

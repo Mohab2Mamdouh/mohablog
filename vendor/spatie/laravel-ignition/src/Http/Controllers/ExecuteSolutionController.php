@@ -3,10 +3,10 @@
 namespace Spatie\LaravelIgnition\Http\Controllers;
 
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Spatie\Ignition\Contracts\SolutionProviderRepository;
-use Spatie\LaravelIgnition\Exceptions\CannotExecuteSolutionForNonLocalEnvironment;
+use Spatie\ErrorSolutions\Contracts\SolutionProviderRepository;
 use Spatie\LaravelIgnition\Exceptions\CannotExecuteSolutionForNonLocalIp;
 use Spatie\LaravelIgnition\Http\Requests\ExecuteSolutionRequest;
+use Spatie\LaravelIgnition\Support\RunnableSolutionsGuard;
 
 class ExecuteSolutionController
 {
@@ -17,21 +17,20 @@ class ExecuteSolutionController
         SolutionProviderRepository $solutionProviderRepository
     ) {
         $this
-            ->ensureLocalEnvironment()
+            ->ensureRunnableSolutionsEnabled()
             ->ensureLocalRequest();
 
         $solution = $request->getRunnableSolution();
 
-        $solution->run($request->get('parameters', []));
+        $solution->run($request->input('parameters', []));
 
         return response()->noContent();
     }
 
-    public function ensureLocalEnvironment(): self
+    public function ensureRunnableSolutionsEnabled(): self
     {
-        if (! app()->environment('local')) {
-            throw CannotExecuteSolutionForNonLocalEnvironment::make();
-        }
+        // Should already be checked in middleware but we want to be 100% certain.
+        abort_unless(RunnableSolutionsGuard::check(), 400);
 
         return $this;
     }

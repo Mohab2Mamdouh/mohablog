@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\PersonalController;
+use App\Http\Controllers\Admin\SkillsController;
+use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\workcontroller;
+use App\Http\Controllers\Admin\LanguageController;
 
 
 /*

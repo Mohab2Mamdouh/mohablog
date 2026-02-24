@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\User\UserHomeController;
 
 
 /*
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 
-Route::namespace('App\Http\Controllers\User')->controller(UserHomeController::class)->group(function ()
+Route::controller(UserHomeController::class)->group(function ()
 {
     Route::get('/portfolio', 'index')->name('portfolio');
     Route::get('/downloadPDF','downloadPDF')->name('downloadPDF');

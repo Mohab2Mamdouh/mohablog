@@ -18,17 +18,6 @@ class ViewClearCommand extends Command
     protected $name = 'view:clear';
 
     /**
-     * The name of the console command.
-     *
-     * This name is used to identify the command during lazy loading.
-     *
-     * @var string|null
-     *
-     * @deprecated
-     */
-    protected static $defaultName = 'view:clear';
-
-    /**
      * The console command description.
      *
      * @var string
@@ -46,7 +35,6 @@ class ViewClearCommand extends Command
      * Create a new config clear command instance.
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @return void
      */
     public function __construct(Filesystem $files)
     {
@@ -70,10 +58,18 @@ class ViewClearCommand extends Command
             throw new RuntimeException('View path not found.');
         }
 
+        $this->laravel['view.engine.resolver']
+            ->resolve('blade')
+            ->forgetCompiledOrNotExpired();
+
         foreach ($this->files->glob("{$path}/*") as $view) {
-            $this->files->delete($view);
+            if ($this->files->isDirectory($view)) {
+                $this->files->deleteDirectory($view);
+            } else {
+                $this->files->delete($view);
+            }
         }
 
-        $this->info('Compiled views cleared successfully.');
+        $this->components->info('Compiled views cleared successfully.');
     }
 }

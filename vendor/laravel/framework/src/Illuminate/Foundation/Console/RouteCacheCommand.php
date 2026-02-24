@@ -19,17 +19,6 @@ class RouteCacheCommand extends Command
     protected $name = 'route:cache';
 
     /**
-     * The name of the console command.
-     *
-     * This name is used to identify the command during lazy loading.
-     *
-     * @var string|null
-     *
-     * @deprecated
-     */
-    protected static $defaultName = 'route:cache';
-
-    /**
      * The console command description.
      *
      * @var string
@@ -47,7 +36,6 @@ class RouteCacheCommand extends Command
      * Create a new route command instance.
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @return void
      */
     public function __construct(Filesystem $files)
     {
@@ -63,12 +51,12 @@ class RouteCacheCommand extends Command
      */
     public function handle()
     {
-        $this->call('route:clear');
+        $this->callSilent('route:clear');
 
         $routes = $this->getFreshApplicationRoutes();
 
         if (count($routes) === 0) {
-            return $this->error("Your application doesn't have any routes.");
+            return $this->components->error("Your application doesn't have any routes.");
         }
 
         foreach ($routes as $route) {
@@ -79,7 +67,7 @@ class RouteCacheCommand extends Command
             $this->laravel->getCachedRoutesPath(), $this->buildRouteCacheFile($routes)
         );
 
-        $this->info('Routes cached successfully.');
+        $this->components->info('Routes cached successfully.');
     }
 
     /**
@@ -102,7 +90,7 @@ class RouteCacheCommand extends Command
      */
     protected function getFreshApplication()
     {
-        return tap(require $this->laravel->bootstrapPath().'/app.php', function ($app) {
+        return tap(require $this->laravel->bootstrapPath('app.php'), function ($app) {
             $app->make(ConsoleKernelContract::class)->bootstrap();
         });
     }

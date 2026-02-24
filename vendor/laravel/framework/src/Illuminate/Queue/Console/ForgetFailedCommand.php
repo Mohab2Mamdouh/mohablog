@@ -16,17 +16,6 @@ class ForgetFailedCommand extends Command
     protected $signature = 'queue:forget {id : The ID of the failed job}';
 
     /**
-     * The name of the console command.
-     *
-     * This name is used to identify the command during lazy loading.
-     *
-     * @var string|null
-     *
-     * @deprecated
-     */
-    protected static $defaultName = 'queue:forget';
-
-    /**
      * The console command description.
      *
      * @var string
@@ -36,14 +25,16 @@ class ForgetFailedCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return int|null
      */
     public function handle()
     {
         if ($this->laravel['queue.failer']->forget($this->argument('id'))) {
-            $this->info('Failed job deleted successfully.');
+            $this->components->info('Failed job deleted successfully.');
         } else {
-            $this->error('No failed job matches the given ID.');
+            $this->components->error('No failed job matches the given ID.');
+
+            return 1;
         }
     }
 }

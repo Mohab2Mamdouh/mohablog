@@ -32,6 +32,7 @@ Route::get('/', [UserHomeController::class, 'index'])->name('portfolio');
 
 Auth::routes();
 
+// Optimize Clear Route
 Route::get('/artisan/optimize-clear', function () {
     try {
         Artisan::call('optimize:clear');
@@ -48,7 +49,6 @@ Route::get('/artisan/optimize-clear', function () {
 });
 
 // Route Clear Route
-
 Route::get('/artisan/route-clear', function () {
     try {
         Artisan::call('route:clear');

@@ -20,15 +20,14 @@ use App\Http\Controllers\User\UserHomeController;
 
 Route::controller(UserHomeController::class)->group(function ()
 {
-    Route::get('/portfolio', 'index')->name('portfolio');
+    Route::get('/portfolio', function () {
+        return redirect(route('portfolio'));
+    })->name('home.portfolio');
     Route::get('/downloadPDF','downloadPDF')->name('downloadPDF');
     Route::get('/PDF/view/','pdfview')->name('viewPDF');
     Route::get('/PDF/view2/','pdfview2')->name('viewPDF2');
 });
 
-Route::get('/', function ()
-{
-    return redirect(route('portfolio'));
-});
+Route::get('/', [UserHomeController::class, 'index'])->name('portfolio');
 
 Auth::routes();

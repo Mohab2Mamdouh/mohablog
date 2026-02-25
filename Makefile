@@ -1,8 +1,9 @@
+.PHONY: $(shell grep -E '^[a-zA-Z_-]+:' Makefile | sed 's/:.*//g')
 
-
-rebuild:
-
-
+#=============================================================================
+# PROJECT CONFIGURATION - Customize these for each project
+#=============================================================================
+PROJECT_NAME := MohabBlog
 GIT_BRANCH := main
 LOG_FILE := storage/logs/laravel.log
 ENV_FILE := .env
@@ -13,8 +14,10 @@ APP_CONTAINER := mohablog-app
 NGINX_CONTAINER := mohablog-nginx
 DB_CONTAINER := mohablog-db
 
-# Find available port starting from 8000
-AVAILABLE_PORT := $(shell for port in $$(seq 8000 8100); do ! nc -z localhost $$port 2>/dev/null && echo $$port && break; done)
+# Find available ports for services
+APP_PORT ?= $(shell for port in $$(seq 8000 8100); do ! nc -z localhost $$port 2>/dev/null && echo $$port && break; done)
+DB_PORT ?= $(shell for port in $$(seq 3307 3399); do ! nc -z localhost $$port 2>/dev/null && echo $$port && break; done)
+PHPMYADMIN_PORT ?= $(shell for port in $$(seq 8080 8180); do ! nc -z localhost $$port 2>/dev/null && echo $$port && break; done)
 
 #=============================================================================
 # COLORS FOR OUTPUT
@@ -36,7 +39,7 @@ NC := \033[0m
 help:
 	@echo ""
 	@echo "$(BBLUE)╔══════════════════════════════════════════════════════════════╗$(NC)"
-	@echo "$(BBLUE)║         $(BGREEN)$(PROJECT_NAME) - Development Environment$(BBLUE)           ║$(NC)"
+	@echo "$(BBLUE)║         $(BGREEN)$(PROJECT_NAME) - Development Environment$(BBLUE)              ║$(NC)"
 	@echo "$(BBLUE)╚══════════════════════════════════════════════════════════════╝$(NC)"
 	@echo ""
 	@echo "$(BBLUE)Service Management:$(NC)"
@@ -44,6 +47,7 @@ help:
 	@echo "  $(GREEN)make up$(NC)               - Start all services"
 	@echo "  $(GREEN)make down$(NC)             - Stop all services"
 	@echo "  $(GREEN)make restart$(NC)          - Restart all services"
+	@echo "  $(GREEN)make rebuild$(NC)          - Full rebuild (no cache)"
 	@echo "  $(GREEN)make ps$(NC)               - Show running containers"
 	@echo "  $(GREEN)make shell$(NC)            - Access app container shell"
 	@echo ""
@@ -61,6 +65,7 @@ help:
 	@echo "  $(GREEN)make clean$(NC)            - Clean up Docker resources"
 	@echo ""
 	@echo "$(BBLUE)Database Operations:$(NC)"
+	@echo "  $(GREEN)make migrate$(NC)          - Run database migrations"
 	@echo "  $(GREEN)make seeder name='...'$(NC) - Create a new seeder"
 	@echo "  $(GREEN)make db-seeder$(NC)        - Generate and run seed data"
 	@echo "  $(GREEN)make reset-db$(NC)         - Reset database (fresh migration + seed)"
@@ -84,22 +89,27 @@ help:
 	@echo ""
 
 #=============================================================================
-# SERVICE MANAGEMENT
+# PORT VALIDATION HELPER
 #=============================================================================
-build:
-	@echo "$(BLUE)Building $(PROJECT_NAME) containers...$(NC)"
-	@if [ -z "$(AVAILABLE_PORT)" ]; then \
-		echo "$(RED)✗ No available ports found in range 8000-8100$(NC)"; \
+check-ports:
+	@if [ -z "$(APP_PORT)" ] || [ -z "$(DB_PORT)" ] || [ -z "$(PHPMYADMIN_PORT)" ]; then \
+		echo "$(RED)✗ No available ports found in required ranges$(NC)"; \
 		exit 1; \
 	fi
-	@echo "$(GREEN)Using web port: $(AVAILABLE_PORT)$(NC)"
-	@PORT=$(AVAILABLE_PORT) docker compose up -d --build
-	@echo "$(GREEN)✓ Build complete - App running on http://localhost:$(AVAILABLE_PORT)$(NC)"
+	@echo "$(GREEN)Using ports - app: $(APP_PORT), db: $(DB_PORT), phpmyadmin: $(PHPMYADMIN_PORT)$(NC)"
 
-up:
+#=============================================================================
+# SERVICE MANAGEMENT
+#=============================================================================
+build: check-ports
+	@echo "$(BLUE)Building $(PROJECT_NAME) containers...$(NC)"
+	@APP_PORT=$(APP_PORT) DB_PORT=$(DB_PORT) PHPMYADMIN_PORT=$(PHPMYADMIN_PORT) docker compose up -d --build
+	@echo "$(GREEN)✓ Build complete - App running on http://localhost:$(APP_PORT)$(NC)"
+
+up: check-ports
 	@echo "$(BLUE)Starting $(PROJECT_NAME)...$(NC)"
-	@PORT=$(AVAILABLE_PORT) docker compose up -d
-	@echo "$(GREEN)✓ Services started on http://localhost:$(AVAILABLE_PORT)$(NC)"
+	@APP_PORT=$(APP_PORT) DB_PORT=$(DB_PORT) PHPMYADMIN_PORT=$(PHPMYADMIN_PORT) docker compose up -d
+	@echo "$(GREEN)✓ Services started on http://localhost:$(APP_PORT)$(NC)"
 
 down:
 	@echo "$(BLUE)Stopping $(PROJECT_NAME)...$(NC)"
@@ -111,16 +121,12 @@ restart:
 	@docker compose restart
 	@echo "$(GREEN)✓ Services restarted$(NC)"
 
-rebuild:
-	@echo "$(BLUE)Rebuilding $(PROJECT_NAME)...$(NC)"
-	@if [ -z "$(AVAILABLE_PORT)" ]; then \
-		echo "$(RED)✗ No available ports found in range 8000-8100$(NC)"; \
-		exit 1; \
-	fi
+rebuild: check-ports
+	@echo "$(BLUE)Rebuilding $(PROJECT_NAME) from scratch...$(NC)"
 	@docker compose down --remove-orphans
 	@docker compose build --no-cache
-	@PORT=$(AVAILABLE_PORT) docker compose up -d
-	@echo "$(GREEN)✓ Rebuild complete - App running on http://localhost:$(AVAILABLE_PORT)$(NC)"
+	@APP_PORT=$(APP_PORT) DB_PORT=$(DB_PORT) PHPMYADMIN_PORT=$(PHPMYADMIN_PORT) docker compose up -d
+	@echo "$(GREEN)✓ Rebuild complete - App running on http://localhost:$(APP_PORT)$(NC)"
 
 ps:
 	@echo "$(BLUE)Running containers:$(NC)"
@@ -141,7 +147,7 @@ logs-static:
 #=============================================================================
 # ENVIRONMENT SETUP
 #=============================================================================
-setup:
+setup: check-ports
 	@echo "$(BLUE)Setting up environment for $(PROJECT_NAME)...$(NC)"
 	@if [ ! -f "$(ENV_FILE)" ]; then \
 		echo "$(YELLOW)Creating $(ENV_FILE) from $(ENV_EXAMPLE)...$(NC)"; \
@@ -149,13 +155,8 @@ setup:
 	else \
 		echo "$(YELLOW)$(ENV_FILE) already exists, skipping...$(NC)"; \
 	fi
-	@if [ -z "$(AVAILABLE_PORT)" ]; then \
-		echo "$(RED)✗ No available ports found in range 8000-8100$(NC)"; \
-		exit 1; \
-	fi
-	@echo "$(GREEN)Using web port: $(AVAILABLE_PORT)$(NC)"
 	@echo "$(BLUE)Building and starting containers...$(NC)"
-	@PORT=$(AVAILABLE_PORT) docker compose up -d --build
+	@APP_PORT=$(APP_PORT) DB_PORT=$(DB_PORT) PHPMYADMIN_PORT=$(PHPMYADMIN_PORT) docker compose up -d --build
 	@echo "$(BLUE)Installing dependencies...$(NC)"
 	@docker exec -it $(APP_CONTAINER) composer install
 	@echo "$(BLUE)Generating application key...$(NC)"
@@ -166,7 +167,7 @@ setup:
 	@docker exec -it $(APP_CONTAINER) php artisan generate:seed
 	@echo "$(BLUE)Generating storage link...$(NC)"
 	@docker exec -it $(APP_CONTAINER) php artisan storage:link
-	@echo "$(GREEN)✓ Environment setup complete - App running on http://localhost:$(AVAILABLE_PORT)$(NC)"
+	@echo "$(GREEN)✓ Setup complete - App: http://localhost:$(APP_PORT) | phpMyAdmin: http://localhost:$(PHPMYADMIN_PORT)$(NC)"
 
 update:
 	@echo "$(BLUE)Updating dependencies...$(NC)"
@@ -174,7 +175,7 @@ update:
 	@echo "$(BLUE)Running migrations...$(NC)"
 	@docker exec -it $(APP_CONTAINER) php artisan migrate --force
 	@echo "$(BLUE)Generating seed data...$(NC)"
-	make db-seeder
+	@$(MAKE) db-seeder
 	@echo "$(GREEN)✓ Update complete$(NC)"
 
 clean:
@@ -183,13 +184,20 @@ clean:
 	@echo "$(GREEN)✓ Cleanup complete$(NC)"
 
 #=============================================================================
-# PHP Commands
+# PHP / ARTISAN COMMANDS
 #=============================================================================
-seeder:
-	@docker exec -it $(APP_CONTAINER) php artisan make:seeder $(name)
-
 migrate:
-	@docker exec -it $(APP_CONTAINER) php artisan migrate
+	@echo "$(BLUE)Running migrations...$(NC)"
+	@docker exec -it $(APP_CONTAINER) php artisan migrate --force
+	@echo "$(GREEN)✓ Migrations complete$(NC)"
+
+seeder:
+ifndef name
+	@echo "$(RED)Error: Seeder name is required$(NC)"
+	@echo "$(YELLOW)Usage: make seeder name='UserSeeder'$(NC)"
+	@exit 1
+endif
+	@docker exec -it $(APP_CONTAINER) php artisan make:seeder $(name)
 
 db-seeder:
 	@docker exec -it $(APP_CONTAINER) php artisan generate:seed
@@ -207,7 +215,6 @@ storage:
 
 oc:
 	@docker exec -it $(APP_CONTAINER) php artisan o:c
-
 
 #=============================================================================
 # GIT OPERATIONS
@@ -283,5 +290,3 @@ translate-apply:
 	@php apply-translations.php && \
 	echo "$(GREEN)✓ Translations applied$(NC)" || \
 	echo "$(RED)✗ Application failed$(NC)"
-
-#=====================================

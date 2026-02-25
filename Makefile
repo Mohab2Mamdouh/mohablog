@@ -1,9 +1,8 @@
-.PHONY: help build up down restart ps shell logs logs-static logs-app logs-nginx logs-db logs-all setup update clean seeder db-seeder reset-db fetch pull status config commit
 
-#=============================================================================
-# PROJECT CONFIGURATION - Customize these for each project
-#=============================================================================
-PROJECT_NAME := mohablog
+
+rebuild:
+
+
 GIT_BRANCH := main
 LOG_FILE := storage/logs/laravel.log
 ENV_FILE := .env
@@ -111,6 +110,17 @@ restart:
 	@echo "$(BLUE)Restarting $(PROJECT_NAME)...$(NC)"
 	@docker compose restart
 	@echo "$(GREEN)✓ Services restarted$(NC)"
+
+rebuild:
+	@echo "$(BLUE)Rebuilding $(PROJECT_NAME)...$(NC)"
+	@if [ -z "$(AVAILABLE_PORT)" ]; then \
+		echo "$(RED)✗ No available ports found in range 8000-8100$(NC)"; \
+		exit 1; \
+	fi
+	@docker compose down --remove-orphans
+	@docker compose build --no-cache
+	@PORT=$(AVAILABLE_PORT) docker compose up -d
+	@echo "$(GREEN)✓ Rebuild complete - App running on http://localhost:$(AVAILABLE_PORT)$(NC)"
 
 ps:
 	@echo "$(BLUE)Running containers:$(NC)"
@@ -274,6 +284,4 @@ translate-apply:
 	echo "$(GREEN)✓ Translations applied$(NC)" || \
 	echo "$(RED)✗ Application failed$(NC)"
 
-#=============================================================================
-# Helpfully Command
-#=============================================================================
+#=====================================

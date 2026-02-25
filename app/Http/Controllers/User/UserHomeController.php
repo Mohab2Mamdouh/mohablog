@@ -103,4 +103,41 @@ class UserHomeController extends BaseController
         $lastName = $strArray[1];
         return $pdf->download($firstName . '-' . $lastName  . '-C.V.pdf');
     }
+
+    private function getPortfolioData()
+    {
+        $types = ['Backend', 'Fontend', 'Database', 'Prior Knowledge', 'Little Knowledge',  'Other Skills'];
+        $skillsData = [];
+        foreach ($types as $type) {
+            $t = str_replace(" ", "_", $type);
+            $skillsData[$t] = Skill::where('type', "=", $type)->get();
+        }
+
+        return array_merge([
+            'projects' => Projects::orderBy('endDate', 'DESC')->get(),
+            'sLanguages' => SpeakingLanguage::all(),
+            'user' => User::first(),
+            'works' => WorkExp::orderBy('startDate', 'DESC')->get(),
+        ], $skillsData);
+    }
+
+    public function templateTerminal()
+    {
+        return view('templates.terminal', $this->getPortfolioData());
+    }
+
+    public function templateCodeFirst()
+    {
+        return view('templates.code-first', $this->getPortfolioData());
+    }
+
+    public function templateArchitecture()
+    {
+        return view('templates.architecture', $this->getPortfolioData());
+    }
+
+    public function templateMinimalist()
+    {
+        return view('templates.minimalist', $this->getPortfolioData());
+    }
 }

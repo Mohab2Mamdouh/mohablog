@@ -30,6 +30,12 @@ Route::controller(UserHomeController::class)->group(function ()
 
 Route::get('/', [UserHomeController::class, 'index'])->name('portfolio');
 
+// Design Templates Preview Routes
+Route::get('/template/terminal', [UserHomeController::class, 'templateTerminal'])->name('template.terminal');
+Route::get('/template/code-first', [UserHomeController::class, 'templateCodeFirst'])->name('template.code-first');
+Route::get('/template/architecture', [UserHomeController::class, 'templateArchitecture'])->name('template.architecture');
+Route::get('/template/minimalist', [UserHomeController::class, 'templateMinimalist'])->name('template.minimalist');
+
 Auth::routes();
 
 // Optimize Clear Route

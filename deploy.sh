@@ -17,6 +17,7 @@ echo "Working directory: $(pwd)"
 
 # 1. Pull latest changes from Git
 echo "Pulling latest changes..."
+git checkout .
 git pull origin main
 
 # 2. Install/update composer dependencies
@@ -33,6 +34,7 @@ php artisan generate:seed
 
 # 4. Clear and cache configs, routes, views
 echo "Clearing caches..."
+php artisan o:c
 php artisan config:clear
 php artisan cache:clear
 php artisan route:clear

@@ -84,7 +84,9 @@ if (is_resource($process)) {
     // Combine output and errors
     $fullOutput = $output . "\n" . $errors;
 } else {
-    $fullOutput = "Failed to start process";
+    $output = "Failed to start process";
+    $errors = '';
+    $returnCode = -1;
 }
 
 // Log the results
@@ -92,9 +94,10 @@ error_log("=== Deployment Log ===");
 error_log("Project Root: " . $projectRoot);
 error_log("Deploy Script: " . $deployScript);
 error_log("Return Code: " . $returnCode);
-error_log("Output: " . $fullOutput);
+error_log("Output: " . $output);
+error_log("Errors: " . $errors);
 
-// Return appropriate HTTP status testing
+// Return appropriate HTTP status
 if ($returnCode === 0) {
     http_response_code(200);
     echo 'Webhook received successfully - Deployment successful!';
@@ -103,5 +106,9 @@ if ($returnCode === 0) {
     echo 'Webhook received - Deployment failed (check logs)';
     error_log("Deployment FAILED with return code: " . $returnCode);
 }
-echo "Return Code: " . $returnCode . "\n";
-echo "Output:\n" . $fullOutput;
+
+echo "\nReturn Code: " . $returnCode . "\n";
+echo "Output:\n" . $output . "\n";
+if (!empty($errors)) {
+    echo "Errors:\n" . $errors;
+}

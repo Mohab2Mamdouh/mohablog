@@ -64,6 +64,22 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="input-group">
+                                        <textarea name="description" class="form-control" placeholder="Description" id="description" cols="30" rows="3">{{ $project->description }}</textarea>
+                                        <label for="description">{{ __('Description') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <input type="text" name="link" id="link" class="form-control" value="{{ $project->link }}" placeholder="Project Link (Live Demo)">
+                                        <label for="link">{{ __('Project Link') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group">
                                         <textarea name="TechnologyStack" class="form-control" placeholder="Technology Stack" id="TechnologyStack" cols="30" rows="2">
                                             {{ $project->techmologyStack }}
                                         </textarea>
@@ -74,7 +90,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="input-group">
-                                        <input type="date" name="endDate" id="endDate" class="form-control" value="{{ $project->endDate }}" placeholder="End Date" required>
+                                        <input type="date" name="endDate" id="endDate" class="form-control" value="{{ $project->endDate }}" placeholder="End Date">
                                         <label for="endDate">{{ __('End Date') }}</label>
                                     </div>
                                 </div>

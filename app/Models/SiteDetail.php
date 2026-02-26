@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class SiteDetail extends Model
 {
-    use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *

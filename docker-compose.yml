@@ -1,7 +1,12 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
     container_name: mohablog-app
+    user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - .:/var/www
     networks:
@@ -11,7 +16,7 @@ services:
     image: nginx:alpine
     container_name: mohablog-nginx
     ports:
-      - "${PORT:-8000}:80"
+      - "${APP_PORT:-8000}:80"
     volumes:
       - .:/var/www
       - ./nginx.conf:/etc/nginx/conf.d/default.conf

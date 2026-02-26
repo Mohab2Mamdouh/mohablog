@@ -5,10 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Projects extends Model
+class Project extends Model
 {
-    use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -17,14 +15,26 @@ class Projects extends Model
     protected $fillable = [
         'name',
         'url',
+        'link',
+        'appURL',
         'caption',
+        'description',
         'techmologyStack',
         'endDate',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'endDate' => 'date',
     ];
 
 
     public function getkills()
     {
-        return $this->belongsToMany('App\Models\skill', 'skillProject', 'project_id', 'skill_id');
+        return $this->belongsToMany(Skill::class, 'skillProject', 'project_id', 'skill_id');
     }
 }

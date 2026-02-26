@@ -1,123 +1,98 @@
 <?php
 
 namespace App\Http\Controllers\User;
-use App\Http\Controllers\Controller;
 
-// Models
-use App\Models\Projects;
-use App\Models\Skill;
-use App\Models\SpeakingLanguage;
-use App\Models\User;
-use App\Models\WorkExp;
-use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
-use Barryvdh\DomPDF\PDF as DomPDFPDF;
+use App\Enums\SkillType;
+use App\Http\Controllers\Controller;
+use App\Services\ProjectService;
+use App\Services\SkillService;
+use App\Services\SpeakingLanguageService;
+use App\Services\UserService;
+use App\Services\WorkExpService;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as BaseController;
-
-
-class UserHomeController extends BaseController
+class UserHomeController extends Controller
 {
+    public function __construct(
+        private readonly SkillService $skillService,
+        private readonly ProjectService $projectService,
+        private readonly SpeakingLanguageService $speakingLanguageService,
+        private readonly UserService $userService,
+        private readonly WorkExpService $workExpService,
+    ) {}
 
     /**
      * It gets all the projects, skills, speaking languages, work experiences, and the user from the
      * database and then returns the index view with all the data
      *
-     * @return The index view is being returned.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View index view is being returned.
      */
     public function index()
     {
-        $types = ['Backend', 'Fontend', 'Database', 'Prior Knowledge', 'Little Knowledge',  'Other Skills'];
+        $data = $this->getPortfolioData();
 
-        foreach ($types as $type ) {
-            $t = str_replace(" ", "_", $type);
-            $$t = Skill::where('type', "=", $type)->get();
-        }
-
-
-        $projects = Projects::orderBy('endDate', 'DESC')->get();
-        $sLanguages = SpeakingLanguage::all();
-        $user = User::first();
-        $works = WorkExp::orderBy('startDate', 'DESC')->get();
-        return view('index',[
-            'projects' => $projects,
-            'sLanguages' => $sLanguages,
-            'works' => $works,
-            'user' => $user,
-            'Backend' => $Backend,
-            'Fontend' => $Fontend,
-            'Database' => $Database,
-            'Prior_Knowledge' => $Prior_Knowledge,
-            'Little_Knowledge' => $Little_Knowledge,
-            'Other_Skills' => $Other_Skills,
-        ]);
+        return view('index', $data);
     }
 
     /**
      * It gets all the data from the database and passes it to the view
      *
-     * @return The view pdf.blade.php
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View view pdf.blade.php
      */
     public function pdfview()
     {
-        $projects = Projects::orderBy('endDate', 'DESC')->get();
-        $skills = Skill::all();
-        $sLanguages = SpeakingLanguage::all();
-        $user = User::first();
-        $works = WorkExp::all();
-
-        return view('pdf', compact('projects', 'skills', 'sLanguages', 'user', 'works'));
+        return view('pdf', $this->getPdfData());
     }
 
     public function pdfview2()
     {
-        $projects = Projects::orderBy('endDate', 'DESC')->get();
-        $skills = Skill::all();
-        $sLanguages = SpeakingLanguage::all();
-        $user = User::first();
-        $works = WorkExp::all();
-
-        return view('pdf2', compact('projects', 'skills', 'sLanguages', 'user', 'works'));
+        return view('pdf2', $this->getPdfData());
     }
 
     /**
      * It takes the data from the database and passes it to the view, then it loads the view and
      * downloads it as a pdf
      *
-     * @return a pdf file.
+     * @return \Illuminate\Http\Response pdf file.
      */
     public function downloadPDF()
     {
         set_time_limit(-100);
-        $projects = Projects::orderBy('endDate', 'DESC')->get();
-        $skills = Skill::all();
-        $sLanguages = SpeakingLanguage::all();
-        $user = User::first();
-        $works = WorkExp::all();
+        $data = $this->getPdfData();
+        $pdf = Pdf::loadView('pdf', $data);
 
-        $pdf = Pdf::loadView('pdf', compact('projects', 'skills', 'sLanguages', 'user', 'works'));
-
-        $strArray = explode(' ',$user->fullName);
+        $strArray = explode(' ', $data['user']->fullName);
         $firstName = $strArray[0];
         $lastName = $strArray[1];
-        return $pdf->download($firstName . '-' . $lastName  . '-C.V.pdf');
+
+        return $pdf->download($firstName . '-' . $lastName . '-C.V.pdf');
     }
 
-    private function getPortfolioData()
+    private function getPdfData(): array
     {
-        $types = ['Backend', 'Fontend', 'Database', 'Prior Knowledge', 'Little Knowledge',  'Other Skills'];
+        return [
+            'projects'   => $this->projectService->getAllOrdered('endDate', 'DESC'),
+            'skills'     => $this->skillService->getAll(),
+            'sLanguages' => $this->speakingLanguageService->getAll(),
+            'user'       => $this->userService->getFirst(),
+            'works'      => $this->workExpService->getAll(),
+        ];
+    }
+
+    private function getPortfolioData(): array
+    {
+        $types = SkillType::values();
         $skillsData = [];
+
         foreach ($types as $type) {
             $t = str_replace(" ", "_", $type);
-            $skillsData[$t] = Skill::where('type', "=", $type)->get();
+            $skillsData[$t] = $this->skillService->getByType($type);
         }
 
         return array_merge([
-            'projects' => Projects::orderBy('endDate', 'DESC')->get(),
-            'sLanguages' => SpeakingLanguage::all(),
-            'user' => User::first(),
-            'works' => WorkExp::orderBy('startDate', 'DESC')->get(),
+            'projects'   => $this->projectService->getAllOrdered('endDate', 'DESC'),
+            'sLanguages' => $this->speakingLanguageService->getAll(),
+            'works'      => $this->workExpService->getAllOrdered('startDate', 'DESC'),
         ], $skillsData);
     }
 

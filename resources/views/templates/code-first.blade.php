@@ -119,7 +119,7 @@
     <div class="code-section">
         <div class="line-numbers">20<br>21<br>22<br>23</div>
         <pre><span class="kw">protected</span> <span class="variable">$skills</span> = [</pre>
-        @foreach(['Backend', 'Database', 'Fontend', 'Prior_Knowledge', 'Little_Knowledge', 'Other_Skills'] as $type)
+        @foreach(['Backend', 'Database', 'Frontend', 'Prior_Knowledge', 'Little_Knowledge', 'Other_Skills'] as $type)
             @php $varName = $type; @endphp
             @if(isset($$varName) && count($$varName) > 0)
                 <div style="margin: 15px 0;">

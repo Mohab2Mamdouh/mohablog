@@ -14,10 +14,11 @@ return new class extends Seeder
      */
     public function run()
     {
-        SiteDetail::create([
-            'favicon' => 'favicon.png',
-            'colorCode' => '#F16269'
-        ]);
+        SiteDetail::truncate();
 
+        SiteDetail::create([
+            'favicon'   => 'favicon.png',
+            'colorCode' => '#F16269',
+        ]);
     }
 };

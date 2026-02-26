@@ -70,7 +70,7 @@
                     </div>
                     <div class="card-body-custom">
                         @php
-                            $types = ['Backend', 'Fontend', 'Database', 'Prior Knowledge', 'Little Knowledge', 'Other Skills']
+                            $types = ['Backend', 'Frontend', 'Database', 'Prior Knowledge', 'Little Knowledge', 'Other Skills']
                         @endphp
 
                         @foreach ($types as $type)
@@ -84,8 +84,8 @@
                                         @foreach ($$t as $skill)
                                             <span class="skill-tag">
                                                 {{ $skill->languageName }}
-                                                @if ($skill->main != 'null')
-                                                    <small>{{ $skill->main }}</small>
+                                                @if ($skill->main)
+                                                    <small>Primary</small>
                                                 @endif
                                             </span>
                                         @endforeach

@@ -94,7 +94,14 @@ error_log("Deploy Script: " . $deployScript);
 error_log("Return Code: " . $returnCode);
 error_log("Output: " . $fullOutput);
 
-// Return appropriate HTTP status test
-http_response_code(200);
+// Return appropriate HTTP status testing
+if ($returnCode === 0) {
+    http_response_code(200);
+    echo 'Webhook received successfully - Deployment successful!';
+} else {
+    http_response_code(500);
+    echo 'Webhook received - Deployment failed (check logs)';
+    error_log("Deployment FAILED with return code: " . $returnCode);
+}
 echo "Return Code: " . $returnCode . "\n";
 echo "Output:\n" . $fullOutput;

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\Api\SpeakingLanguageApiController;
 use App\Http\Controllers\Api\SkillsApiController;
-use App\Http\Controllers\Api\ProjectsApiController;
+use App\Http\Controllers\Api\ProjectApiController;
 use App\Http\Controllers\Api\WorkExpsApiController;
 use App\Http\Controllers\Api\FeedbackApiController;
 
@@ -58,7 +58,7 @@ Route::prefix('skills')->controller(SkillsApiController::class)->group(function 
     Route::delete('delete/{skill}', 'delete');
 });
 
-Route::prefix('projects')->controller(ProjectsApiController::class)->group(function ()
+Route::prefix('projects')->controller(ProjectApiController::class)->group(function ()
 {
     Route::get('show-all', 'showAll');
 

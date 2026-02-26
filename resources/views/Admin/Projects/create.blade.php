@@ -64,6 +64,22 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="input-group">
+                                        <textarea name="description" class="form-control" placeholder="Description" id="description" cols="30" rows="3"></textarea>
+                                        <label for="description">{{ __('Description') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <input type="text" name="link" id="link" class="form-control" placeholder="Project Link (Live Demo)">
+                                        <label for="link">{{ __('Project Link') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group">
                                         <textarea name="TechnologyStack" class="form-control" placeholder="Technology Stack" id="TechnologyStack" cols="30" rows="2">
                                         </textarea>
                                         <label for="TechnologyStack">{{ __('Technology Stack') }}</label>
@@ -73,7 +89,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="input-group">
-                                        <input type="date" name="endDate" id="endDate" class="form-control" placeholder="End Date" required>
+                                        <input type="date" name="endDate" id="endDate" class="form-control" placeholder="End Date">
                                         <label for="endDate">{{ __('End Date') }}</label>
                                     </div>
                                 </div>

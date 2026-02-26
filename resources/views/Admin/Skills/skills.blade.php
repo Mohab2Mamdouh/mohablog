@@ -201,12 +201,12 @@
 <section class="content">
     <div class="container">
         @php
-            $types = ['Backend', 'Fontend', 'Database', 'Prior Knowledge', 'Little Knowledge', 'Other Skills']
+            $types = \App\Enums\SkillType::values();
         @endphp
 
         @foreach ($types as $type)
             @php
-                $typeSkills = $skills->where('type', $type);
+                $typeSkills = $skills->where('type.value', $type);
             @endphp
 
             @if($typeSkills->count() > 0)
@@ -221,9 +221,9 @@
                                 <div class="skill-card">
                                     <h5>{{ $skill->languageName }}</h5>
                                     <p>
-                                        {{ $skill->type }}
-                                        @if ($skill->main != 'null')
-                                            - {{ $skill->main }}
+                                        {{ $skill->type instanceof \App\Enums\SkillType ? $skill->type->value : $skill->type }}
+                                        @if ($skill->main)
+                                            - <span class="badge bg-primary">Primary</span>
                                         @endif
                                     </p>
                                     <div class="skill-actions">

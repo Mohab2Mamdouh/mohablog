@@ -1,29 +1,32 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Http\Controllers\Controller;
 
-use App\Models\Projects;
-use App\Models\Skill;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ProjectRequest;
+use App\Services\ProjectService;
 
 class ProjectController extends Controller
 {
+    public function __construct(
+        private readonly ProjectService $projectService
+    ) {}
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View
      */
     public function index()
     {
-        $projects = Projects::all();
+        $projects = $this->projectService->getAll();
         return view('Admin.Projects.projects', compact('projects'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View
      */
     public function create()
     {
@@ -34,50 +37,23 @@ class ProjectController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(ProjectRequest $request)
     {
-        $request->validate([
-            'projectName' => 'required',
-            'caption' => 'required',
-            'TechnologyStack' => 'required',
-            'endDate' => 'required',
-        ]);
-
-        $project = new Projects();
-        $project->name = $request['projectName'];
-        $project->url = $request['URL'];
-        $project->caption = $request['caption'];
-        $project->techmologyStack = $request['TechnologyStack'];
-        $project->endDate = $request['endDate'];
-        $project->appURL = ($request['appURL'] != "") ? $request['appURL'] : $request['URL'] ;
-
-        $project->save();
-
+        $this->projectService->create($request);
         return redirect(route('projects.show'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View
      */
     public function edit($id)
     {
-        $project = Projects::where('id', $id)->first();
+        $project = $this->projectService->getById($id);
         return view('Admin.Projects.edit', compact('project'));
     }
 
@@ -86,26 +62,11 @@ class ProjectController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, Projects $id)
+    public function update(ProjectRequest $request, int $id)
     {
-        $request->validate([
-            'projectName' => 'required',
-            'caption' => 'required',
-            'TechnologyStack' => 'required',
-            'endDate' => 'required',
-        ]);
-
-        $id->name = $request['projectName'];
-        $id->url = $request['URL'];
-        $id->caption = $request['caption'];
-        $id->techmologyStack = $request['TechnologyStack'];
-        $id->endDate = $request['endDate'];
-        $id->appURL = $request['appURL'];
-
-        $id->save();
-
+        $this->projectService->update($id, $request);
         return redirect(route('projects.show'));
     }
 
@@ -113,11 +74,11 @@ class ProjectController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy($id)
     {
-        $project = Projects::where('id', $id)->delete();
+        $this->projectService->delete($id);
         return redirect(route('projects.show'));
     }
 }

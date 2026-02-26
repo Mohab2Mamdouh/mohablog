@@ -1,5 +1,8 @@
 FROM php:8.2-fpm
 
+ARG UID=1000
+ARG GID=1000
+
 WORKDIR /var/www
 
 RUN apt-get update && apt-get install -y \
@@ -9,6 +12,13 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Create a non-root user matching the host user's UID/GID
+RUN groupadd -g ${GID} appuser || true \
+    && useradd -u ${UID} -g ${GID} -m appuser \
+    && chown -R appuser:appuser /var/www
+
 COPY . .
 
-RUN chown -R www-data:www-data /var/www
+RUN chown -R appuser:appuser /var/www
+
+USER appuser

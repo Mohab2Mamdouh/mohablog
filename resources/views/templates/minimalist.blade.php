@@ -168,7 +168,7 @@
 </head>
 <body>
     <button class="dark-mode-toggle" onclick="toggleDark()">◐</button>
-    
+
     <div class="container">
         <h1>{{ $user->fullName }}</h1>
         <div class="subtitle">{{ $user->title }}</div>
@@ -190,7 +190,7 @@
 
         <div class="section">
             <h2>Skills</h2>
-            @foreach(['Backend', 'Database', 'Fontend'] as $type)
+            @foreach(['Backend', 'Database', 'Frontend'] as $type)
                 @php $varName = str_replace(' ', '_', $type); @endphp
                 @if(isset($$varName) && count($$varName) > 0)
                     <h3 style="font-size: 1.2rem; margin: 30px 0 15px; font-weight: 500;">{{ $type }}</h3>

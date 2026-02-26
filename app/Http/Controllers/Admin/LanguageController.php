@@ -1,28 +1,32 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Http\Controllers\Controller;
 
-use App\Models\SpeakingLanguage;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\SpeakingLanguageRequest;
+use App\Services\SpeakingLanguageService;
 
 class LanguageController extends Controller
 {
+    public function __construct(
+        private readonly SpeakingLanguageService $speakingLanguageService
+    ) {}
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View
      */
     public function index()
     {
-        $langs = SpeakingLanguage::all();
+        $langs = $this->speakingLanguageService->getAll();
         return view('Admin.Slanguage.Slanguage', compact('langs'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View
      */
     public function create()
     {
@@ -33,45 +37,25 @@ class LanguageController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(SpeakingLanguageRequest $request)
     {
-        $request->validate([
-            'languageName' => 'required',
-            'level' => 'required',
-        ]);
-
-        $sLanguage = new SpeakingLanguage();
-        $sLanguage->languageName = $request['languageName'];
-        $sLanguage->level = $request['level'];
-
-        $sLanguage->save();
-
+        $this->speakingLanguageService->create($request);
         return redirect(route('langs.show'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View
      */
     public function edit($id)
     {
-        $lang = SpeakingLanguage::where('id', $id)->first();
-        return view('Admin.Slanguage.edit', compact('work'));
+        $lang = $this->speakingLanguageService->getById($id);
+        return view('Admin.Slanguage.edit', compact('lang'));
     }
 
     /**
@@ -79,21 +63,11 @@ class LanguageController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, SpeakingLanguage $id)
+    public function update(SpeakingLanguageRequest $request, int $id)
     {
-        $request->validate([
-            'languageName' => 'required',
-            'level' => 'required',
-        ]);
-
-        // $sLanguage = SpeakingLanguage::where('id', $id)->first();
-        $id->languageName = $request['languageName'];
-        $id->level = $request['level'];
-
-        $id->save();
-
+        $this->speakingLanguageService->update($id, $request);
         return redirect(route('langs.show'));
     }
 
@@ -101,11 +75,11 @@ class LanguageController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy($id)
     {
-        $lang = SpeakingLanguage::where('id', $id)->delete();
+        $this->speakingLanguageService->delete($id);
         return redirect(route('langs.show'));
     }
 }

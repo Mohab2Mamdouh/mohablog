@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PersonalController;
 use App\Http\Controllers\Admin\SkillsController;
 use App\Http\Controllers\Admin\ProjectController;
-use App\Http\Controllers\Admin\workcontroller;
+use App\Http\Controllers\Admin\WorkController;
 use App\Http\Controllers\Admin\LanguageController;
 
 
@@ -29,7 +29,7 @@ Route::controller(HomeController::class)->group(function ()
 
 Route::prefix('personal')->name('info.')->controller(PersonalController::class)->group(function ()
 {
-    // Update Persenol Info
+    // Update Personal Info
     Route::get('/show', 'show')->name('show');
     Route::get('/edit', 'edit')->name('edit');
     Route::post('/update', 'update')->name('update');
@@ -74,7 +74,7 @@ Route::prefix('projects')->name('projects.')->controller(ProjectController::clas
     Route::get('/{id}/delete', 'destroy')->name('delete');
 });
 
-Route::prefix('works')->name('works.')->controller(workcontroller::class)->group(function ()
+Route::prefix('works')->name('works.')->controller(WorkController::class)->group(function ()
 {
     // Show Work Experiences
     Route::get('/show', 'index')->name('show');

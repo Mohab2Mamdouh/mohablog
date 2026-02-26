@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class WorkExp extends Model
 {
-    use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -16,8 +14,10 @@ class WorkExp extends Model
      */
     protected $fillable = [
         'companyName',
+        'title',
         'startDate',
         'endDate',
+        'current',
         'caption',
         'environment',
     ];

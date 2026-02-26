@@ -6,17 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
+use App\Models\Project;
 
-use App\Models\Projects;
-
-class ProjectsApiController extends BaseController
+class ProjectApiController extends BaseController
 {
     public function showAll()
     {
-        return Projects::all();
+        return Project::all();
     }
 
-    public function show(Projects $project)
+    public function show(Project $project)
     {
         return $project;
     }
@@ -32,7 +31,7 @@ class ProjectsApiController extends BaseController
             'appURL' => 'required'
         ]);
 
-        $success = Projects::create([
+        $success = Project::create([
             'name' => request('name'),
             'url' => request('url'),
             'caption' => request('caption'),
@@ -46,7 +45,7 @@ class ProjectsApiController extends BaseController
         ];
     }
 
-    public function update(Projects $project)
+    public function update(Project $project)
     {
         request()->validate([
             'name' => 'required',
@@ -71,7 +70,7 @@ class ProjectsApiController extends BaseController
         ];
     }
 
-    public function delete(Projects $project)
+    public function delete(Project $project)
     {
         $success = $project->delete();
 

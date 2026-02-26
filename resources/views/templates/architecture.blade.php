@@ -197,7 +197,7 @@
         <div class="connection-line"></div>
 
         <div class="architecture-grid">
-            @foreach(['Backend', 'Database', 'Fontend'] as $type)
+            @foreach(['Backend', 'Database', 'Frontend'] as $type)
                 @php $varName = str_replace(' ', '_', $type); @endphp
                 @if(isset($$varName) && count($$varName) > 0)
                     <div class="layer">

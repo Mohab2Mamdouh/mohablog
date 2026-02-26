@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <title>{{ $user->fullName }} - CV</title>
     <style>
-        @page { 
+        @page {
             margin: 0;
         }
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: Arial, sans-serif;
             color: #2d3748;
@@ -117,7 +117,7 @@
         .skill-col:nth-child(even) {
             margin-right: 0;
         }
-        
+
         .skill-col:after {
             content: "";
             display: table;
@@ -216,10 +216,10 @@
         <div class="section">
             <div class="section-title">Technical Skills</div>
             @php
-                $types = ['Backend', 'Fontend', 'Database', 'Prior Knowledge', 'Little Knowledge', 'Other Skills'];
+                $types = ['Backend', 'Frontend', 'Database', 'Prior Knowledge', 'Little Knowledge', 'Other Skills'];
                 $allSkills = [];
                 foreach($types as $type) {
-                    $typeSkills = $skills->where('type', $type);
+                    $typeSkills = $skills->where('type.value', $type);
                     if($typeSkills->count() > 0) {
                         $allSkills[] = ['type' => $type, 'items' => $typeSkills->all()];
                     }
@@ -234,7 +234,7 @@
                             <div class="skill-title">{{ $allSkills[$i]['type'] }}</div>
                             <ul class="skill-list">
                                 @foreach($allSkills[$i]['items'] as $skill)
-                                    <li>• {{ $skill->languageName }}@if($skill->main != 'null') ({{ $skill->main }})@endif</li>
+                                    <li>• {{ $skill->languageName }}@if($skill->main) (Primary)@endif</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -247,7 +247,7 @@
                             <div class="skill-title">{{ $allSkills[$i]['type'] }}</div>
                             <ul class="skill-list">
                                 @foreach($allSkills[$i]['items'] as $skill)
-                                    <li>• {{ $skill->languageName }}@if($skill->main != 'null') ({{ $skill->main }})@endif</li>
+                                    <li>• {{ $skill->languageName }}@if($skill->main) (Primary)@endif</li>
                                 @endforeach
                             </ul>
                         </div>

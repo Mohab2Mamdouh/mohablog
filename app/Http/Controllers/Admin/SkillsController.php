@@ -1,29 +1,32 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Http\Controllers\Controller;
 
-use App\Models\Skill;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\SkillRequest;
+use App\Services\SkillService;
 
 class SkillsController extends Controller
 {
-    private $types = ['Backend', 'Fontend', 'Database', 'Little Knowledge', 'Prior Knowledge', 'Other Skills'];
+    public function __construct(
+        private readonly SkillService $skillService
+    ) {}
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View
      */
     public function index()
     {
-        $skills = Skill::all();
+        $skills = $this->skillService->getAll();
         return view('Admin.Skills.skills', compact('skills'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View
      */
     public function create()
     {
@@ -34,50 +37,24 @@ class SkillsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(SkillRequest $request)
     {
-        $request->validate([
-            'languageName' => 'required',
-            'type' => 'in:' . implode(',', $this->types),
-        ]);
-
-        $skill = new Skill();
-        $skill->languageName = $request['languageName'];
-
-        $skill->type = $request['type'];
-
-        if ($request['main'] != null) {
-            $skill->main = $request['main'];
-        } else {
-            $skill->main = "null";
-        }
-        $skill->save();
-
+        $this->skillService->create($request);
         return redirect(route('skills.show'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View
      */
     public function edit($id)
     {
-        $skill = Skill::where('id', $id)->first();
+        $skill = $this->skillService->getById($id);
         return view('Admin.Skills.edit', compact('skill'));
     }
 
@@ -86,28 +63,11 @@ class SkillsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, Skill $id)
+    public function update(SkillRequest $request, int $id)
     {
-        $request->validate([
-            'languageName' => 'required',
-            'type' => 'in:' . implode(',', $this->types),
-        ]);
-
-        // $skill = Skill::where('id', $id)->first();
-        $id->languageName = $request['languageName'];
-
-        $id->type = $request['type'];
-
-        if ($request['main'] != null) {
-            $id->main = $request['main'];
-        } else {
-            $id->main = "null";
-        }
-
-        $id->save();
-
+        $this->skillService->update($id, $request);
         return redirect(route('skills.show'));
     }
 
@@ -115,11 +75,11 @@ class SkillsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy($id)
     {
-        $skill = Skill::where('id', $id)->delete();
+        $this->skillService->delete($id);
         return redirect(route('skills.show'));
     }
 }

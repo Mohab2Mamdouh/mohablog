@@ -112,7 +112,7 @@
         <div class="section">
             <h2>ls -la skills/</h2>
             <div class="code-block">
-                @foreach(['Backend', 'Database', 'Fontend'] as $type)
+                @foreach(['Backend', 'Database', 'Frontend'] as $type)
                     @php $varName = str_replace(' ', '_', $type); @endphp
                     @if(isset($$varName) && count($$varName) > 0)
                         <div style="margin: 20px 0;">

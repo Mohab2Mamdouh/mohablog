@@ -44,11 +44,8 @@
                                     <div class="input-group">
                                         <select class="form-control" name="type" id="type" required>
                                             <option class="text-uppercase text-center" selected="selected" disabled="disabled">{{ __('- Skill Type -') }}</option>
-                                            @php
-                                                $types = ['Backend', 'Fontend', 'Database', 'Little Knowledge', 'Prior Knowledge', 'Other Skills']
-                                            @endphp
-                                            @foreach ($types as $type)
-                                                <option value="{{ $type }}">{{ $type }}</option>
+                                            @foreach (\App\Enums\SkillType::cases() as $type)
+                                                <option value="{{ $type->value }}">{{ $type->value }}</option>
                                             @endforeach
                                         </select>
                                         <label for="type">{{ __('Skill Type') }}</label>
@@ -59,7 +56,7 @@
                                 <div class="col">
                                     <div class="input-group">
                                         <div>
-                                            <input style="width: 20% !important" type="checkbox" value="primary" name="main" id="main">
+                                            <input style="width: 20% !important" type="checkbox" value="1" name="main" id="main">
                                             <span class="text-muted">{{ __('Primary Language') }}</span>
                                         </div>
                                         <label for="main">{{ __('Main') }}</label>

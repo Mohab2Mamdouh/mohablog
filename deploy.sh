@@ -22,8 +22,7 @@ git pull origin main
 
 # 2. Install/update composer dependencies
 echo "Installing composer dependencies..."
-composer install --no-dev --optimize-autoloader --no-interaction
-
+COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 # 3. Run database migrations
 echo "Running migrations..."
 php artisan migrate --force

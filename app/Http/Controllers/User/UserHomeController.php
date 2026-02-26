@@ -53,7 +53,7 @@ class UserHomeController extends Controller
      * It takes the data from the database and passes it to the view, then it loads the view and
      * downloads it as a pdf
      *
-     * @return \Illuminate\Http\Response pdf file.
+     * @return \Illuminate\Http\Response pdf file....
      */
     public function downloadPDF()
     {

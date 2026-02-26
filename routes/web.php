@@ -70,7 +70,7 @@ Route::get('/artisan/route-clear', function () {
     }
 });
 
-// cache Clear cache tets
+// cache Clear
 Route::get('/artisan/cache-clear', function () {
     try {
         Artisan::call('cache:clear');

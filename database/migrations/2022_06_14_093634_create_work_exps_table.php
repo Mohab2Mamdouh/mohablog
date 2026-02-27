@@ -19,8 +19,8 @@ return new class extends Migration
             $table->date('startDate');
             $table->date('endDate')->nullable();
             $table->string('current')->nullable();
-            $table->string('caption');
-            $table->string('environment');
+            $table->longText('caption');
+            $table->longText('environment');
             $table->string('title');
             $table->timestamps();
         });

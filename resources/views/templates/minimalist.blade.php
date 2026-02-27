@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalist - {{ $user->fullName }}</title>
+    <title>{{ $user->fullName }} - {{ $user->currentPosition }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -60,17 +60,40 @@
             height: 3px;
             background: var(--accent);
         }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .skill-group {
+            padding: 0;
+        }
+        .skill-group h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-left: 3px solid var(--accent);
+            padding: 8px 14px;
+            background: var(--tag-bg);
+            display: inline-block;
+            border-radius: 0 4px 4px 0;
+            margin-bottom: 15px;
+        }
         .skill-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            margin: 20px 0;
+            gap: 10px;
         }
         .skill-item {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--text);
-            padding: 8px 0;
+            padding: 8px 14px;
             position: relative;
+            background: var(--tag-bg);
+            border-radius: 6px;
         }
         .skill-item:after {
             content: '';
@@ -81,6 +104,7 @@
             height: 2px;
             background: var(--accent);
             transition: width 0.3s;
+            border-radius: 0 0 6px 6px;
         }
         .skill-item:hover:after { width: 100%; }
         .project {
@@ -208,17 +232,21 @@
 
         <div class="section">
             <h2>Skills</h2>
-            @foreach(['Backend', 'Frontend', 'Database', 'Prior Knowledge', 'Little Knowledge', 'Other Skills'] as $type)
-                @php $varName = str_replace(' ', '_', $type); @endphp
-                @if(isset($$varName) && count($$varName) > 0)
-                    <h3 style="font-size: 1.2rem; margin: 30px 0 15px; font-weight: 500;">{{ $type }}</h3>
-                    <div class="skill-list">
-                        @foreach($$varName as $skill)
-                            <span class="skill-item">{{ $skill->name }}</span>
-                        @endforeach
-                    </div>
-                @endif
-            @endforeach
+            <div class="skills-grid">
+                @foreach(\App\Enums\SkillType::values() as $type)
+                    @php $varName = str_replace(' ', '_', $type); @endphp
+                    @if(isset($$varName) && count($$varName) > 0)
+                        <div class="skill-group">
+                            <h3>{{ $type }}</h3>
+                            <div class="skill-list">
+                                @foreach($$varName as $skill)
+                                    <span class="skill-item">{{ $skill->name }}</span>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
         </div>
 
         <div class="section">

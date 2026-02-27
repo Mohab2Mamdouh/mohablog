@@ -28,9 +28,10 @@ Route::controller(UserHomeController::class)->group(function ()
     Route::get('/PDF/view2/','pdfview2')->name('viewPDF2');
 });
 
-Route::get('/', [UserHomeController::class, 'index'])->name('portfolio');
+Route::get('/', [UserHomeController::class, 'templateMinimalist'])->name('portfolio');
 
 // Design Templates Preview Routes
+Route::get('/template/original', [UserHomeController::class, 'index'])->name('template.original');
 Route::get('/template/terminal', [UserHomeController::class, 'templateTerminal'])->name('template.terminal');
 Route::get('/template/code-first', [UserHomeController::class, 'templateCodeFirst'])->name('template.code-first');
 Route::get('/template/architecture', [UserHomeController::class, 'templateArchitecture'])->name('template.architecture');

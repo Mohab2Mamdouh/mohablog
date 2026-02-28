@@ -72,6 +72,10 @@ Route::prefix('projects')->name('projects.')->controller(ProjectController::clas
 
     // Delete Project
     Route::get('/{id}/delete', 'destroy')->name('delete');
+
+    // Order Projects
+    Route::get('/order', 'order')->name('order');
+    Route::post('/update-order', 'updateOrder')->name('updateOrder');
 });
 
 Route::prefix('works')->name('works.')->controller(WorkController::class)->group(function ()

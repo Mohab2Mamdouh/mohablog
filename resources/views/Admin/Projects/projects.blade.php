@@ -174,13 +174,91 @@
         background: #e2e8f0;
         color: #0f172a;
     }
+
+    .action-bar {
+        padding: 24px 0;
+        animation: fadeIn 0.6s ease;
+    }
+
+    .action-bar .container {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 28px;
+        border-radius: 14px;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .action-btn i {
+        font-size: 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .action-btn:hover i {
+        transform: scale(1.15);
+    }
+
+    .action-btn::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(255,255,255,0.1);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .action-btn:hover::after {
+        opacity: 1;
+    }
+
+    .action-btn--add {
+        background: linear-gradient(135deg, #10b981, #059669);
+        box-shadow: 0 4px 15px rgba(16,185,129,0.3);
+    }
+
+    .action-btn--add:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(16,185,129,0.4);
+        color: #fff;
+    }
+
+    .action-btn--order {
+        background: linear-gradient(135deg, #6366f1, #4f46e5);
+        box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+    }
+
+    .action-btn--order:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(99,102,241,0.4);
+        color: #fff;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
 </style>
 
 <section class="breadcrumb-nav">
     <div class="container">
         <h4>
-            <a href="{{ route('home') }}">{{ __('Dashboard') }}</a> 
-            <i class="fas fa-chevron-right" style="font-size: 0.8rem; color: #94a3b8;"></i> 
+            <a href="{{ route('home') }}">{{ __('Dashboard') }}</a>
+            <i class="fas fa-chevron-right" style="font-size: 0.8rem; color: #94a3b8;"></i>
             <span style="color: #64748b;">{{ __('Projects') }}</span>
         </h4>
     </div>
@@ -188,8 +266,11 @@
 
 <div class="action-bar">
     <div class="container">
-        <a href="{{ route('projects.create') }}" class="btn-add">
+        <a href="{{ route('projects.create') }}" class="action-btn action-btn--add">
             <i class="fa-solid fa-plus"></i> {{ __('Add Project') }}
+        </a>
+        <a href="{{ route('projects.order') }}" class="action-btn action-btn--order">
+            <i class="fa-solid fa-sort"></i> {{ __('Projects Order') }}
         </a>
     </div>
 </div>
@@ -211,7 +292,7 @@
                                 </a>
                             </div>
                         </div>
-                        
+
                         <div class="project-body">
                             <div class="project-link">
                                 <i class="fab fa-github"></i>
@@ -220,7 +301,7 @@
                                     <a href="{{ $project->url }}" target="_blank">{{ $project->url }}</a>
                                 </div>
                             </div>
-                            
+
                             @if($project->appURL)
                                 <div class="project-link">
                                     <i class="fas fa-external-link-alt"></i>
@@ -230,14 +311,14 @@
                                     </div>
                                 </div>
                             @endif
-                            
+
                             <p class="project-description">{{ $project->caption }}</p>
-                            
+
                             <div class="project-tech">
                                 <strong>Technology Stack:</strong> <span>{{ $project->techmologyStack }}</span>
                             </div>
                         </div>
-                        
+
                         <div class="project-footer">
                             <i class="far fa-calendar"></i> {{ __('Created at ') . $project->endDate }}
                         </div>

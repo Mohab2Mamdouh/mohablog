@@ -90,7 +90,7 @@ class UserHomeController extends Controller
         }
 
         return array_merge([
-            'projects'   => $this->projectService->getAllOrdered('endDate', 'DESC'),
+            'projects'   => $this->projectService->getAllOrdered(),
             'sLanguages' => $this->speakingLanguageService->getAll(),
             'works'      => $this->workExpService->getAllOrdered('startDate', 'DESC'),
         ], $skillsData);

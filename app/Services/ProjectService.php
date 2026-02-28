@@ -19,7 +19,7 @@ class ProjectService
         return $this->projectRepository->getAll();
     }
 
-    public function getAllOrdered(string $orderBy = 'endDate', string $order = 'DESC'): Collection
+    public function getAllOrdered(string $orderBy = 'order', string $order = 'ASC'): Collection
     {
         return $this->projectRepository->query(
             order: $order,
@@ -49,6 +49,18 @@ class ProjectService
     public function delete(int $id): bool
     {
         return $this->projectRepository->delete($id);
+    }
+
+    /**
+     * Bulk-update the order column for projects.
+     *
+     * @param array $orderedIds [position0 => projectId, position1 => projectId, …]
+     */
+    public function updateOrder(array $orderedIds): void
+    {
+        foreach ($orderedIds as $position => $id) {
+            $this->projectRepository->update((int) $id, ['order' => $position + 1]);
+        }
     }
 }
 

@@ -290,3 +290,11 @@ translate-apply:
 	@php apply-translations.php && \
 	echo "$(GREEN)✓ Translations applied$(NC)" || \
 	echo "$(RED)✗ Application failed$(NC)"
+
+remove-project-containers:
+	$(eval PROJECT := $(shell basename $(CURDIR) | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]-_'))
+	@echo "$(YELLOW)⚠ WARNING: This will remove all containers belonging to project '$(PROJECT)' only.$(NC)"
+	@echo "$(YELLOW)Press Ctrl+C within 5 seconds to cancel...$(NC)"
+	@sleep 5
+	@docker rm -f $$(docker ps -aq --filter "label=com.docker.compose.project=$(PROJECT)") 2>/dev/null || echo "$(GREEN)No project containers found$(NC)"
+	@echo "$(GREEN)Project containers removed$(NC)"

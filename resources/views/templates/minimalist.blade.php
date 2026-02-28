@@ -224,8 +224,9 @@
                 <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap;">
                     @if($user->github)<a href="{{ $user->github }}" target="_blank" style="color: var(--accent); text-decoration: none;">GitHub ↗</a>@endif
                     @if($user->linked_in)<a href="{{ $user->linked_in }}" target="_blank" style="color: var(--accent); text-decoration: none;">LinkedIn ↗</a>@endif
-                    @if($user->behance)<a href="{{ $user->behance }}" target="_blank" style="color: var(--accent); text-decoration: none;">Behance ↗</a>@endif
-                    @if($user->my_site)<a href="{{ $user->my_site }}" target="_blank" style="color: var(--accent); text-decoration: none;">Website ↗</a>@endif
+                    @if($user->phone)<a href="https://wa.me/20{{$user->phone}}" target="_blank" style="color: var(--accent); text-decoration: none;">Whatsapp ↗</a>@endif
+                        {{--                    @if($user->behance)<a href="{{ $user->behance }}" target="_blank" style="color: var(--accent); text-decoration: none;">Behance ↗</a>@endif--}}
+{{--                    @if($user->my_site)<a href="{{ $user->my_site }}" target="_blank" style="color: var(--accent); text-decoration: none;">Website ↗</a>@endif--}}
                 </div>
             </div>
         </div>

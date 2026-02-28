@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProjectOrderRequest;
 use App\Http\Requests\ProjectRequest;
 use App\Services\ProjectService;
 
@@ -80,5 +81,24 @@ class ProjectController extends Controller
     {
         $this->projectService->delete($id);
         return redirect(route('projects.show'));
+    }
+
+    /**
+     * Show the project ordering page.
+     */
+    public function order()
+    {
+        $projects = $this->projectService->getAllOrdered('order', 'ASC');
+        return view('Admin.Projects.order', compact('projects'));
+    }
+
+    /**
+     * Save the new project order (AJAX).
+     */
+    public function updateOrder(ProjectOrderRequest $request)
+    {
+        $this->projectService->updateOrder($request->validated('order'));
+
+        return response()->json(['success' => true]);
     }
 }

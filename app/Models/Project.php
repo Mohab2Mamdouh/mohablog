@@ -21,6 +21,7 @@ class Project extends Model
         'description',
         'techmologyStack',
         'endDate',
+        'order',
     ];
 
     /**

@@ -118,7 +118,7 @@
                                 </div>
                                 <div class="project-date">
                                     <i class="far fa-calendar"></i>
-                                    {{ date("F Y", strtotime($p->endDate)) }}
+                                    {{ $p->endDate ? date("F Y", strtotime($p->endDate)) : 'Ongoing' }}
                                 </div>
                             </div>
                         @endforeach

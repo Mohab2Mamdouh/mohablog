@@ -182,6 +182,32 @@
             transition: transform 0.3s;
         }
         .dark-mode-toggle:hover { transform: scale(1.1); }
+        .cv-download {
+            position: fixed;
+            top: 30px;
+            right: 90px;
+            height: 50px;
+            padding: 0 20px;
+            border-radius: 25px;
+            background: var(--accent);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 100;
+        }
+        .cv-download:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255,45,32,0.4);
+            color: white;
+        }
         .tag {
             font-size: 0.8rem;
             padding: 4px 10px;
@@ -200,6 +226,7 @@
     </style>
 </head>
 <body class="dark">
+    <a href="{{ route('downloadPDF') }}" class="cv-download">↓ Download CV</a>
     <button class="dark-mode-toggle" onclick="toggleDark()">◐</button>
 
     <div class="container">

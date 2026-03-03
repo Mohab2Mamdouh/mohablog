@@ -174,25 +174,22 @@
 						</div>
                         <div class="yui-u">
                             <div class="skills">
-                                @php
-                                    $types = ['Backend', 'Frontend', 'Database', 'Prior Knowledge', 'Little Knowledge',  'Other Skills']
-                                @endphp
-
-                                @for ($i = 0; $i < count($types); $i++)
-                                    <h5 class="text-capitalize"><strong>{{ $types[$i] }}</strong></h5><br>
-                                    <div class="row">
-                                        @for ($x = 0; $x < count($skills); $x++)
-                                            @if (($skills[$x]->type instanceof \App\Enums\SkillType ? $skills[$x]->type->value : $skills[$x]->type) == $types[$i])
+                                @foreach(\App\Enums\SkillType::values() as $type)
+                                    @php $varName = str_replace(' ', '_', $type); @endphp
+                                    @if(isset($$varName) && count($$varName) > 0)
+                                        <h5 class="text-capitalize"><strong>{{ $type }}</strong></h5><br>
+                                        <div class="row">
+                                            @foreach($$varName as $skill)
                                                 <div class="col" style="border-bottom: 1px solid #ccc;border-right: 1px solid #ccc;text-align:center">
-                                                    {{ $skills[$x]->languageName }}
-                                                    @if ($skills[$x]->main)
+                                                    {{ $skill->languageName }}
+                                                    @if ($skill->main)
                                                         - Primary
                                                     @endif
                                                 </div>
-                                            @endif
-                                        @endfor
-                                    </div>
-                                @endfor
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                @endforeach
                             </div>
 						</div>
 					</div><!--// .yui-gf-->

@@ -11,291 +11,453 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: Arial, sans-serif;
-            color: #2d3748;
+            font-family: Helvetica, Arial, sans-serif;
+            color: #1f2937;
             font-size: 10pt;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
+        /* ── HEADER ── */
         .header {
-            background: #6366f1;
-            color: white;
-            padding: 30px 50px;
-            margin-bottom: 20px;
+            padding: 40px 60px 28px;
+            background: #1e293b;
+            color: #ffffff;
+        }
+
+        .header-table { width: 100%; }
+
+        .header-left { vertical-align: bottom; }
+
+        .header-right {
+            vertical-align: bottom;
+            text-align: right;
+            width: 250px;
         }
 
         .name {
             font-size: 28pt;
             font-weight: bold;
-            margin-bottom: 10px;
+            line-height: 1.1;
+            margin-bottom: 6px;
+            color: #ffffff;
         }
 
-        .title {
-            font-size: 13pt;
-            margin-bottom: 15px;
+        .title-line {
+            font-size: 11pt;
+            color: #94a3b8;
+            margin-bottom: 2px;
         }
 
-        .contact-info {
-            font-size: 9pt;
+        .title-line strong {
+            color: #60a5fa;
+        }
+
+        .contact-item {
+            font-size: 8.5pt;
+            color: #cbd5e1;
             line-height: 1.8;
         }
 
-        .content {
-            padding: 0 50px 40px;
+        .contact-item strong {
+            color: #ffffff;
         }
 
+        .contact-table {
+            border-collapse: collapse;
+        }
+
+        .contact-table td {
+            font-size: 8.5pt;
+            color: #cbd5e1;
+            line-height: 1.8;
+            padding: 0 0 0 0;
+            vertical-align: top;
+        }
+
+        .contact-label {
+            color: #ffffff;
+            font-weight: bold;
+            white-space: nowrap;
+            padding-right: 8px;
+            text-align: left;
+        }
+
+        .contact-value {
+            text-align: left;
+        }
+
+        /* ── CONTENT WRAPPER ── */
+        .content {
+            padding: 10px 60px 50px;
+        }
+
+        /* ── SECTION ── */
         .section {
-            margin-bottom: 25px;
+            margin-top: 22px;
+            page-break-inside: auto;
         }
 
         .section-title {
-            font-size: 13pt;
+            font-size: 11.5pt;
             font-weight: bold;
-            color: #6366f1;
-            margin-bottom: 15px;
-            padding-bottom: 6px;
-            border-bottom: 2px solid #6366f1;
+            color: #1e293b;
             text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #3b82f6;
+            margin-bottom: 12px;
+            page-break-after: avoid;
         }
 
+        /* ── ABOUT ── */
         .about-text {
-            text-align: justify;
-            color: #4a5568;
             font-size: 9.5pt;
-            line-height: 1.6;
+            color: #4b5563;
+            line-height: 1.65;
         }
 
-        .item {
-            margin-bottom: 18px;
-            padding-left: 15px;
-            border-left: 2px solid #e2e8f0;
+        /* ── WORK ── */
+        .work-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
             page-break-inside: avoid;
         }
 
-        .item-title {
-            font-size: 11pt;
+        .work-item:last-child { border-bottom: none; }
+
+        .work-table { width: 100%; }
+
+        .work-left {
+            width: 115px;
+            vertical-align: top;
+            padding-right: 12px;
+            padding-top: 1px;
+        }
+
+        .work-right { vertical-align: top; }
+
+        .work-date {
+            font-size: 8pt;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        .work-company {
+            font-size: 8.5pt;
             font-weight: bold;
-            color: #1a202c;
+            color: #3b82f6;
+            margin-top: 3px;
         }
 
-        .item-subtitle {
-            font-size: 10pt;
-            color: #6366f1;
+        .work-role {
+            font-size: 10.5pt;
             font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 3px;
         }
 
-        .item-date {
+        .work-desc {
             font-size: 9pt;
-            color: #718096;
-            font-style: italic;
+            color: #6b7280;
+            line-height: 1.55;
+            margin-bottom: 4px;
         }
 
-        .item-description {
-            margin-top: 6px;
-            color: #4a5568;
-            font-size: 9.5pt;
+        .work-env {
+            font-size: 7.5pt;
+            color: #9ca3af;
+            background: #f1f5f9;
+            padding: 2px 7px;
+            border-radius: 2px;
+            display: inline;
         }
 
-        .item-tech {
-            margin-top: 6px;
-            font-size: 9pt;
-            color: #718096;
-        }
-
-        .skills-grid {
-            display: block;
+        /* ── SKILLS ── */
+        .skills-table {
             width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 4px;
         }
 
-        .skill-col {
-            width: 48%;
-            float: left;
-            margin-right: 4%;
-            display: inline-block;
+        .skills-table td {
+            vertical-align: top;
+            width: 33.33%;
+            padding: 0 8px 10px 0;
         }
 
-        .skill-col:nth-child(even) {
-            margin-right: 0;
-        }
-
-        .skill-col:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        .skill-block {
-            margin-bottom: 15px;
-        }
-
-        .skill-title {
-            font-size: 10pt;
+        .skill-type {
+            font-size: 7.5pt;
             font-weight: bold;
-            color: #1a202c;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #9ca3af;
+            margin-bottom: 5px;
+        }
+
+        .skill-tag {
+            font-size: 7.5pt;
+            padding: 2px 6px;
+            background: #f1f5f9;
+            color: #374151;
+            border-radius: 2px;
+            display: inline-block;
+            margin: 1px 0;
+        }
+
+        .skill-tag-main {
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-weight: bold;
+        }
+
+        /* ── PROJECTS ── */
+        .projects-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 4px;
+        }
+
+        .projects-table td {
+            vertical-align: top;
+            width: 50%;
+            padding: 0 5px 10px 0;
+        }
+
+        .proj-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 10px 14px;
             margin-bottom: 8px;
+            page-break-inside: avoid;
         }
 
-        .skill-list {
-            list-style: none;
-            padding: 0;
+        .proj-name {
+            font-size: 9.5pt;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 3px;
         }
 
-        .skill-list li {
-            padding: 3px 0;
-            color: #4a5568;
-            font-size: 9pt;
+        .proj-ongoing {
+            font-size: 6.5pt;
+            color: #22c55e;
+            font-weight: bold;
         }
 
-        .lang-item {
-            padding: 6px 0;
-            border-bottom: 1px solid #f1f5f9;
+        .proj-caption {
+            font-size: 8pt;
+            color: #6b7280;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+
+        .proj-tech {
+            font-size: 7pt;
+            color: #9ca3af;
+        }
+
+        .proj-url {
+            font-size: 7pt;
+            color: #3b82f6;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ── LANGUAGES ── */
+        .lang-table { border-collapse: collapse; }
+
+        .lang-table td {
+            padding: 3px 24px 3px 0;
+            vertical-align: top;
         }
 
         .lang-name {
+            font-size: 9.5pt;
             font-weight: bold;
-            color: #1a202c;
+            color: #1e293b;
         }
 
         .lang-level {
-            color: #4a5568;
-            font-size: 9pt;
-        }
-
-        .page-break {
-            page-break-before: always;
-            padding-top: 20px;
-        }
-
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #f7fafc;
-            padding: 12px 50px;
             font-size: 8pt;
-            color: #718096;
-            text-align: center;
-            border-top: 1px solid #e2e8f0;
+            color: #9ca3af;
+        }
+
+        /* ── FOOTER ── */
+        .footer-area {
+            margin-top: 22px;
+            padding-top: 12px;
+            border-top: 2px solid #1e293b;
+        }
+
+        .footer-table { width: 100%; }
+
+        .footer-left { vertical-align: top; }
+
+        .footer-right {
+            vertical-align: top;
+            text-align: right;
+            font-size: 8pt;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        .footer-right strong {
+            color: #1e293b;
+            font-size: 9pt;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="name">{{ $user->fullName }}</div>
-        <div class="title">{{ $user->title }}</div>
-        <div class="contact-info">
-            <div><strong>Email:</strong> {{ $user->email }} | <strong>Phone:</strong> {{ $user->phone }}</div>
-            <div><strong>Location:</strong> {{ $user->address }} | <strong>Experience:</strong> {{ $user->expYear }}+ Years</div>
-            <div><strong>LinkedIn:</strong> {{ $user->linked_in }}</div>
-            <div><strong>GitHub:</strong> {{ $user->github }}</div>
-        </div>
+
+<!-- HEADER -->
+<div class="header">
+    <table class="header-table" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="header-left">
+                <div class="name">{{ $user->fullName }}</div>
+                <div class="title-line">{{ $user->title }} · <strong>{{ $user->expYear }}+ Years Experience</strong></div>
+            </td>
+            <td class="header-right">
+                <table class="contact-table" cellpadding="0" cellspacing="0">
+                    <tr><td class="contact-label">Email:</td><td class="contact-value">{{ $user->email }}</td></tr>
+                    <tr><td class="contact-label">Phone:</td><td class="contact-value">{{ $user->phone }}</td></tr>
+                    <tr><td class="contact-label">Location:</td><td class="contact-value">{{ $user->address }}</td></tr>
+                    <tr><td class="contact-label">GitHub:</td><td class="contact-value">{{ $user->github }}</td></tr>
+                    <tr><td class="contact-label">LinkedIn:</td><td class="contact-value">{{ $user->linked_in }}</td></tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+    <!-- ABOUT -->
+    <div class="section">
+        <div class="section-title">About</div>
+        <p class="about-text">{{ $user->profile }}</p>
     </div>
 
-    <div class="content">
-        <div class="section">
-            <div class="section-title">About Me</div>
-            <div class="about-text">{{ $user->profile }}</div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Work Experience</div>
-            @foreach ($works as $w)
-                <div class="item">
-                    <div class="item-title">{{ $w->title }}</div>
-                    <div class="item-subtitle">{{ $w->companyName }}</div>
-                    <div class="item-date">{{ date('M Y', strtotime($w->startDate)) }} - {{ $w->endDate ? date('M Y', strtotime($w->endDate)) : $w->current }}</div>
-                    <div class="item-description">{{ $w->caption }}</div>
-                    <div class="item-tech"><strong>Environment:</strong> {{ $w->environment }}</div>
-                </div>
-            @endforeach
-        </div>
-    </div>
-
-    <div class="content page-break">
-        <div class="section">
-            <div class="section-title">Technical Skills</div>
-            @php
-                $types = ['Backend', 'Frontend', 'Database', 'Prior Knowledge', 'Little Knowledge', 'Other Skills'];
-                $allSkills = [];
-                foreach($types as $type) {
-                    $typeSkills = $skills->where('type.value', $type);
-                    if($typeSkills->count() > 0) {
-                        $allSkills[] = ['type' => $type, 'items' => $typeSkills->all()];
-                    }
-                }
-                $half = ceil(count($allSkills) / 2);
-            @endphp
-            <div class="skills-grid">
-                <div class="skill-col">
-                    @for($i = 0; $i < $half; $i++)
-                        @if(isset($allSkills[$i]))
-                        <div class="skill-block">
-                            <div class="skill-title">{{ $allSkills[$i]['type'] }}</div>
-                            <ul class="skill-list">
-                                @foreach($allSkills[$i]['items'] as $skill)
-                                    <li>• {{ $skill->languageName }}@if($skill->main) (Primary)@endif</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-                    @endfor
-                </div>
-                <div class="skill-col">
-                    @for($i = $half; $i < count($allSkills); $i++)
-                        <div class="skill-block">
-                            <div class="skill-title">{{ $allSkills[$i]['type'] }}</div>
-                            <ul class="skill-list">
-                                @foreach($allSkills[$i]['items'] as $skill)
-                                    <li>• {{ $skill->languageName }}@if($skill->main) (Primary)@endif</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endfor
-                </div>
+    <!-- EXPERIENCE -->
+    <div class="section">
+        <div class="section-title">Experience</div>
+        @foreach ($works as $w)
+            <div class="work-item">
+                <table class="work-table" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="work-left">
+                            <div class="work-date">
+                                {{ date('M Y', strtotime($w->startDate)) }} –<br>
+                                {{ $w->endDate ? date('M Y', strtotime($w->endDate)) : ($w->current ?? 'Present') }}
+                            </div>
+                            <div class="work-company">{{ $w->companyName }}</div>
+                        </td>
+                        <td class="work-right">
+                            <div class="work-role">{{ $w->title }}</div>
+                            @if($w->caption)
+                                <div class="work-desc">{{ $w->caption }}</div>
+                            @endif
+                            @if($w->environment)
+                                <span class="work-env">{{ $w->environment }}</span>
+                            @endif
+                        </td>
+                    </tr>
+                </table>
             </div>
-            <div style="clear: both;"></div>
-        </div>
-
-        <div class="section" style="clear: both;">
-            <div class="section-title">Notable Projects</div>
-            @foreach ($projects as $p)
-                <div style="padding-top: 20px;">
-                    <div class="item" style="padding-top: 0;">
-                        <div class="item-title">{{ $p->name }}</div>
-                        <div class="item-description">{{ $p->caption }}</div>
-                        <div class="item-tech"><strong>Tech Stack:</strong> {{ $p->techmologyStack }}</div>
-                        @if($p->appURL)<div class="item-tech"><strong>URL:</strong> {{ $p->appURL }}</div>@endif
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        <div class="section">
-            <div class="section-title">Languages</div>
-            @foreach ($sLanguages as $sl)
-                <div class="lang-item">
-                    <span class="lang-name">{{ $sl->languageName }}:</span>
-                    <span class="lang-level">
-                        @php
-                            $level = match($sl->level) {
-                                'Level 1' => 'Elementary',
-                                'Level 2' => 'Low Intermediate',
-                                'Level 3' => 'High Intermediate',
-                                'Level 4' => 'Advanced',
-                                'Level 5' => 'Native',
-                                default => 'No Knowledge'
-                            };
-                        @endphp
-                        {{ $level }}
-                    </span>
-                </div>
-            @endforeach
-        </div>
+        @endforeach
     </div>
 
-    <div class="footer">
-        Generated on {{ date('F d, Y') }} | {{ $user->fullName }} - Professional CV
+    <!-- SKILLS -->
+    <div class="section">
+        <div class="section-title">Skills</div>
+        @php
+            $allSkills = [];
+            foreach(\App\Enums\SkillType::values() as $type) {
+                $varName = str_replace(' ', '_', $type);
+                if(isset($$varName) && count($$varName) > 0) {
+                    $allSkills[] = ['type' => $type, 'items' => $$varName];
+                }
+            }
+            $skillRows = array_chunk($allSkills, 3);
+        @endphp
+        @foreach($skillRows as $row)
+            <table class="skills-table" cellpadding="0" cellspacing="0">
+                <tr>
+                    @foreach($row as $sg)
+                        <td>
+                            <div class="skill-type">{{ $sg['type'] }}</div>
+                            @foreach($sg['items'] as $skill)
+                                <span class="skill-tag {{ $skill->main ? 'skill-tag-main' : '' }}">{{ $skill->languageName }}</span>
+                            @endforeach
+                        </td>
+                    @endforeach
+                    @for($i = count($row); $i < 3; $i++)
+                        <td></td>
+                    @endfor
+                </tr>
+            </table>
+        @endforeach
     </div>
+
+    <!-- PROJECTS -->
+    <div class="section">
+        <div class="section-title">Projects</div>
+        @foreach($projects as $p)
+            <div class="proj-card">
+                <div class="proj-name">
+                    {{ $p->name }}
+                    @if(!$p->endDate)
+                        <span class="proj-ongoing">● ongoing</span>
+                    @endif
+                </div>
+                @if($p->description ?: $p->caption)
+                    <div class="proj-caption">{{ $p->description ?: $p->caption }}</div>
+                @endif
+                <div class="proj-tech">{{ $p->techmologyStack }}</div>
+                @if($p->appURL)
+                    <span class="proj-url">{{ $p->appURL }}</span>
+                @endif
+            </div>
+        @endforeach
+    </div>
+
+    <!-- LANGUAGES + FOOTER -->
+    <div class="footer-area">
+        <table class="footer-table" cellpadding="0" cellspacing="0">
+            <tr>
+                <td class="footer-left">
+                    <div class="section-title" style="margin-top: 0;">Languages</div>
+                    <table class="lang-table" cellpadding="0" cellspacing="0">
+                        <tr>
+                            @foreach ($sLanguages as $sl)
+                                @php
+                                    $levelLabel = match($sl->level) {
+                                        'Level 1' => 'Elementary',
+                                        'Level 2' => 'Low Intermediate',
+                                        'Level 3' => 'High Intermediate',
+                                        'Level 4' => 'Advanced',
+                                        'Level 5' => 'Native',
+                                        default => 'No Knowledge'
+                                    };
+                                @endphp
+                                <td>
+                                    <div class="lang-name">{{ $sl->languageName }}</div>
+                                    <div class="lang-level">{{ $levelLabel }}</div>
+                                </td>
+                            @endforeach
+                        </tr>
+                    </table>
+                </td>
+                <td class="footer-right">
+                    <strong>{{ $user->fullName }}</strong><br>
+                    Professional CV · {{ date('F Y') }}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
 </body>
 </html>

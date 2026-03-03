@@ -41,12 +41,12 @@ class UserHomeController extends Controller
      */
     public function pdfview()
     {
-        return view('pdf', $this->getPdfData());
+        return view('pdf', $this->getPortfolioData());
     }
 
     public function pdfview2()
     {
-        return view('pdf2', $this->getPdfData());
+        return view('pdf2', $this->getPortfolioData());
     }
 
     /**
@@ -58,8 +58,9 @@ class UserHomeController extends Controller
     public function downloadPDF()
     {
         set_time_limit(-100);
-        $data = $this->getPdfData();
-        $pdf = Pdf::loadView('pdf', $data);
+        $data = $this->getPortfolioData();
+        $pdf = Pdf::loadView('pdf', $data)
+            ->setPaper('a4', 'portrait');
 
         $strArray = explode(' ', $data['user']->fullName);
         $firstName = $strArray[0];
@@ -68,16 +69,6 @@ class UserHomeController extends Controller
         return $pdf->download($firstName . '-' . $lastName . '-C.V.pdf');
     }
 
-    private function getPdfData(): array
-    {
-        return [
-            'projects'   => $this->projectService->getAllOrdered('endDate', 'DESC'),
-            'skills'     => $this->skillService->getAll(),
-            'sLanguages' => $this->speakingLanguageService->getAll(),
-            'user'       => $this->userService->getFirst(),
-            'works'      => $this->workExpService->getAll(),
-        ];
-    }
 
     private function getPortfolioData(): array
     {
@@ -92,6 +83,7 @@ class UserHomeController extends Controller
         return array_merge([
             'projects'   => $this->projectService->getAllOrdered(),
             'sLanguages' => $this->speakingLanguageService->getAll(),
+            'user'       => $this->userService->getFirst(),
             'works'      => $this->workExpService->getAllOrdered('startDate', 'DESC'),
         ], $skillsData);
     }

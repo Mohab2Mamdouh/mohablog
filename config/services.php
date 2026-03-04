@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'replicate' => [
+        'api_token' => env('REPLICATE_API_TOKEN'),
+    ],
+
 ];

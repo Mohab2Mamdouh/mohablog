@@ -143,7 +143,7 @@
             <h1>Dashboard</h1>
             <p>Manage your portfolio content</p>
         </div>
-        
+
         <div class="dashboard-grid">
             <a href="{{ route('info.show') }}" class="dashboard-card">
                 <div class="card-icon">
@@ -182,6 +182,14 @@
                     <i class="fas fa-language"></i>
                 </div>
                 <h5 class="card-title">{{ __('Speaking Language') }}</h5>
+                <i class="fas fa-arrow-right card-arrow"></i>
+            </a>
+
+            <a href="{{ route('image-processing.index') }}" class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h5 class="card-title">{{ __('Image Processing') }}</h5>
                 <i class="fas fa-arrow-right card-arrow"></i>
             </a>
         </div>

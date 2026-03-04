@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\SkillsController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\WorkController;
 use App\Http\Controllers\Admin\LanguageController;
+use App\Http\Controllers\Admin\ImageProcessingController;
 
 
 /*
@@ -113,3 +114,8 @@ Route::prefix('speaking-language')->name('langs.')->controller(LanguageControlle
     Route::get('/{id}/delete', 'destroy')->name('delete');
 });
 
+Route::prefix('image-processing')->name('image-processing.')->controller(ImageProcessingController::class)->group(function ()
+{
+    Route::get('/', 'index')->name('index');
+    Route::post('/process', 'process')->name('process');
+});

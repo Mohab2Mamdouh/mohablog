@@ -36,6 +36,13 @@
         >
             <a href="{{ route('langs.show') }}">{{ __('Speaking Language Section') }}</a>
         </li>
+        <li
+        @if (Route::currentRouteName() == 'image-processing.index')
+            class="active"
+        @endif
+        >
+            <a href="{{ route('image-processing.index') }}">{{ __('Image Processing') }}</a>
+        </li>
     </ul>
 </div>
 

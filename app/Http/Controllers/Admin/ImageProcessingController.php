@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageProcessingRequest;
 use App\Services\ImageProcessingService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ImageProcessingController extends Controller
 {
@@ -23,9 +25,9 @@ class ImageProcessingController extends Controller
     }
 
     /**
-     * Process the image via Replicate API and return the result.
+     * Create a prediction via AJAX. Returns prediction ID + poll URL.
      */
-    public function process(ImageProcessingRequest $request)
+    public function process(ImageProcessingRequest $request): JsonResponse
     {
         $imageBase64 = null;
 
@@ -35,7 +37,7 @@ class ImageProcessingController extends Controller
             $imageBase64 = 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($file->getRealPath()));
         }
 
-        $result = $this->imageProcessingService->process(
+        $result = $this->imageProcessingService->createPrediction(
             prompt: $request->validated('prompt'),
             negativePrompt: $request->validated('negative_prompt'),
             guidanceScale: (float) ($request->validated('guidance_scale') ?? 7.5),
@@ -43,10 +45,26 @@ class ImageProcessingController extends Controller
             imageBase64: $imageBase64,
         );
 
-        return view('Admin.ImageProcessing.index', [
-            'result'  => $result,
-            'oldData' => $request->validated(),
-        ]);
+        return response()->json($result);
+    }
+
+    /**
+     * Poll the prediction status via AJAX.
+     */
+    public function poll(Request $request): JsonResponse
+    {
+        $pollUrl = $request->input('poll_url');
+
+        if (empty($pollUrl)) {
+            return response()->json([
+                'success' => false,
+                'error'   => 'No poll URL provided.',
+            ], 400);
+        }
+
+        $result = $this->imageProcessingService->pollPrediction($pollUrl);
+
+        return response()->json($result);
     }
 }
 

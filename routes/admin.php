@@ -118,4 +118,5 @@ Route::prefix('image-processing')->name('image-processing.')->controller(ImagePr
 {
     Route::get('/', 'index')->name('index');
     Route::post('/process', 'process')->name('process');
+    Route::post('/poll', 'poll')->name('poll');
 });

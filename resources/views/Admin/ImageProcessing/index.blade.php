@@ -281,60 +281,16 @@
 
     <!-- Result Section -->
     <div class="col-xl-5">
-        @if (isset($result))
-            <div class="ip-card result-section">
-                <h5><i class="fas fa-image"></i> <span>Result</span></h5>
-
-                @if ($result['success'])
-                    <div class="alert alert-success mb-3">
-                        <i class="fas fa-check-circle"></i> Image processed successfully! Status: <strong>{{ $result['status'] }}</strong>
-                    </div>
-
-                    @if (is_array($result['output']))
-                        @foreach ($result['output'] as $imageUrl)
-                            <div class="mb-3">
-                                <img src="{{ $imageUrl }}" alt="Generated Image" class="result-image">
-                                <div class="mt-2">
-                                    <a href="{{ $imageUrl }}" target="_blank" class="btn btn-sm btn-outline-primary" download>
-                                        <i class="fas fa-download"></i> Download
-                                    </a>
-                                    <a href="{{ $imageUrl }}" target="_blank" class="btn btn-sm btn-outline-secondary">
-                                        <i class="fas fa-external-link-alt"></i> Open Full Size
-                                    </a>
-                                </div>
-                            </div>
-                        @endforeach
-                    @elseif (is_string($result['output']))
-                        <div class="mb-3">
-                            <img src="{{ $result['output'] }}" alt="Generated Image" class="result-image">
-                            <div class="mt-2">
-                                <a href="{{ $result['output'] }}" target="_blank" class="btn btn-sm btn-outline-primary" download>
-                                    <i class="fas fa-download"></i> Download
-                                </a>
-                                <a href="{{ $result['output'] }}" target="_blank" class="btn btn-sm btn-outline-secondary">
-                                    <i class="fas fa-external-link-alt"></i> Open Full Size
-                                </a>
-                            </div>
-                        </div>
-                    @else
-                        <div class="alert alert-warning">
-                            <i class="fas fa-exclamation-triangle"></i> No image output received. Raw response:
-                            <pre class="mt-2 mb-0" style="font-size: 0.85rem;">{{ json_encode($result['data'] ?? [], JSON_PRETTY_PRINT) }}</pre>
-                        </div>
-                    @endif
-                @else
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-circle"></i> <strong>Error:</strong> {{ $result['error'] }}
-                    </div>
-                @endif
+        <div class="ip-card result-section" id="resultSection">
+            <h5><i class="fas fa-image"></i> <span>Result</span></h5>
+            <div id="resultContent">
+                <div style="text-align:center; padding: 40px 20px;">
+                    <i class="fas fa-image" style="font-size: 4rem; background: linear-gradient(135deg, #6366f1, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px;"></i>
+                    <h5 style="color: #94a3b8; font-weight: 500;">Your result will appear here</h5>
+                    <p style="color: #cbd5e1; font-size: 0.9rem;">Fill in the form and click "Process Image" to get started.</p>
+                </div>
             </div>
-        @else
-            <div class="ip-card" style="text-align:center; padding: 60px 30px;">
-                <i class="fas fa-image" style="font-size: 4rem; background: linear-gradient(135deg, #6366f1, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px;"></i>
-                <h5 style="color: #94a3b8; font-weight: 500;">Your result will appear here</h5>
-                <p style="color: #cbd5e1; font-size: 0.9rem;">Fill in the form and click "Process Image" to get started.</p>
-            </div>
-        @endif
+        </div>
     </div>
 </div>
 
@@ -366,10 +322,203 @@
         }
     });
 
-    // Show loading overlay on submit
-    document.getElementById('processForm').addEventListener('submit', function() {
-        document.getElementById('loadingOverlay').classList.add('active');
-        document.getElementById('submitBtn').disabled = true;
+    // AJAX form submission + polling
+    document.getElementById('processForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const form = this;
+        const formData = new FormData(form);
+        const overlay = document.getElementById('loadingOverlay');
+        const overlayText = overlay.querySelector('p');
+        const submitBtn = document.getElementById('submitBtn');
+        const resultContent = document.getElementById('resultContent');
+
+        // Show loading
+        overlay.classList.add('active');
+        submitBtn.disabled = true;
+        overlayText.textContent = 'Uploading and creating prediction...';
+
+        resultContent.innerHTML = `
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status" style="width:2.5rem;height:2.5rem;">
+                    <span class="visually-hidden">Processing...</span>
+                </div>
+                <p class="text-muted" id="statusText">Creating prediction...</p>
+                <div class="progress mt-3" style="height:6px;border-radius:3px;">
+                    <div class="progress-bar" id="progressBar" role="progressbar"
+                         style="width: 5%; background: linear-gradient(135deg, #6366f1, #ec4899); transition: width 0.5s ease;"
+                         aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <pre class="mt-3 text-start" id="logsOutput" style="font-size:0.8rem; max-height:200px; overflow-y:auto; background:#f8fafc; border-radius:10px; padding:12px; display:none;"></pre>
+            </div>
+        `;
+
+        // Step 1: Create prediction
+        fetch('{{ route("image-processing.process") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+            },
+            body: formData,
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) {
+                showError(data.error || 'Failed to create prediction.');
+                return;
+            }
+
+            // If output is already available
+            if (data.output) {
+                showResult(data.output, data.status);
+                return;
+            }
+
+            // Start polling
+            const pollUrl = data.poll_url;
+            if (!pollUrl) {
+                showError('No poll URL returned. Raw response: ' + JSON.stringify(data.data, null, 2));
+                return;
+            }
+
+            overlayText.textContent = 'Prediction created! Waiting for processing...';
+            document.getElementById('statusText').textContent = 'Status: ' + (data.status || 'starting') + ' — Polling for result...';
+            document.getElementById('progressBar').style.width = '15%';
+
+            pollPrediction(pollUrl, 0);
+        })
+        .catch(err => {
+            showError('Network error: ' + err.message);
+        });
+
+        function pollPrediction(pollUrl, attempt) {
+            const maxAttempts = 120;
+            const interval = 2000; // 2 seconds
+
+            if (attempt >= maxAttempts) {
+                showError('Prediction timed out after ' + (maxAttempts * 2) + ' seconds.');
+                return;
+            }
+
+            setTimeout(() => {
+                fetch('{{ route("image-processing.poll") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ poll_url: pollUrl }),
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) {
+                        showError(data.error || 'Failed to poll prediction.');
+                        return;
+                    }
+
+                    const status = data.status || 'unknown';
+                    const progress = Math.min(15 + (attempt / maxAttempts) * 80, 90);
+                    document.getElementById('progressBar').style.width = progress + '%';
+
+                    // Show logs if available
+                    if (data.logs) {
+                        const logsEl = document.getElementById('logsOutput');
+                        logsEl.style.display = 'block';
+                        logsEl.textContent = data.logs;
+                        logsEl.scrollTop = logsEl.scrollHeight;
+                    }
+
+                    if (status === 'succeeded') {
+                        document.getElementById('progressBar').style.width = '100%';
+                        showResult(data.output, status);
+                        return;
+                    }
+
+                    if (status === 'failed' || status === 'canceled') {
+                        showError('Prediction ' + status + ': ' + (data.error || 'Unknown error'));
+                        return;
+                    }
+
+                    // Still processing
+                    const statusLabels = {
+                        'starting': 'Starting up model...',
+                        'processing': 'Generating image...',
+                    };
+                    const statusLabel = statusLabels[status] || ('Status: ' + status);
+                    document.getElementById('statusText').textContent = statusLabel;
+                    overlayText.textContent = statusLabel;
+
+                    pollPrediction(pollUrl, attempt + 1);
+                })
+                .catch(err => {
+                    // Retry on network error
+                    if (attempt < maxAttempts - 1) {
+                        pollPrediction(pollUrl, attempt + 1);
+                    } else {
+                        showError('Network error during polling: ' + err.message);
+                    }
+                });
+            }, interval);
+        }
+
+        function showResult(output, status) {
+            overlay.classList.remove('active');
+            submitBtn.disabled = false;
+
+            let imagesHtml = '';
+
+            if (Array.isArray(output)) {
+                output.forEach(function(url) {
+                    imagesHtml += renderImage(url);
+                });
+            } else if (typeof output === 'string') {
+                imagesHtml = renderImage(output);
+            } else {
+                resultContent.innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i> Unexpected output format.
+                        <pre class="mt-2 mb-0" style="font-size: 0.85rem;">${JSON.stringify(output, null, 2)}</pre>
+                    </div>
+                `;
+                return;
+            }
+
+            resultContent.innerHTML = `
+                <div class="alert alert-success mb-3">
+                    <i class="fas fa-check-circle"></i> Image processed successfully! Status: <strong>${status}</strong>
+                </div>
+                ${imagesHtml}
+            `;
+        }
+
+        function renderImage(url) {
+            return `
+                <div class="mb-3">
+                    <img src="${url}" alt="Generated Image" class="result-image" style="width:100%;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+                    <div class="mt-2">
+                        <a href="${url}" target="_blank" class="btn btn-sm btn-outline-primary" download>
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                        <a href="${url}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-external-link-alt"></i> Open Full Size
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            overlay.classList.remove('active');
+            submitBtn.disabled = false;
+
+            resultContent.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i> <strong>Error:</strong> ${message}
+                </div>
+            `;
+        }
     });
 </script>
 

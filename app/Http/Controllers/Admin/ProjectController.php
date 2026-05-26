@@ -83,6 +83,13 @@ class ProjectController extends Controller
         return redirect(route('projects.show'));
     }
 
+    public function toggleCV(int $id)
+    {
+        $project = $this->projectService->toggleCV($id);
+
+        return response()->json(['show_at_cv' => $project->show_at_cv]);
+    }
+
     /**
      * Show the project ordering page.
      */

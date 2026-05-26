@@ -9,8 +9,10 @@ services:
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - .:/var/www
+    depends_on:
+      - db
     networks:
-      - albaraka
+      - mohablog
 
   nginx:
     image: nginx:alpine
@@ -23,10 +25,38 @@ services:
     depends_on:
       - app
     networks:
-      - albaraka
+      - mohablog
+
+  db:
+    image: mysql:8.0
+    container_name: mohablog-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_DATABASE:-mohablog}
+    ports:
+      - "${DB_PORT:-3307}:3306"
+    volumes:
+      - mohablog-db:/var/lib/mysql
+    networks:
+      - mohablog
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: mohablog-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    ports:
+      - "${PHPMYADMIN_PORT:-8080}:80"
+    depends_on:
+      - db
+    networks:
+      - mohablog
 
 networks:
-  albaraka:
-    external: true
-    name: albaraka-insfund_albaraka
+  mohablog:
 
+volumes:
+  mohablog-db:

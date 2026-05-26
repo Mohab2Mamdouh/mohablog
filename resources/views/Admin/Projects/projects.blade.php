@@ -320,7 +320,15 @@
                         </div>
 
                         <div class="project-footer">
-                            <i class="far fa-calendar"></i> {{ __('Created at ') . $project->endDate }}
+                            <i class="far fa-calendar"></i> {{ __('End Date: ') . ($project->formattedEndDate ?? __('Ongoing')) }}
+                            <div class="form-check form-switch ms-auto">
+                                <input class="form-check-input toggle-cv" type="checkbox" role="switch"
+                                    id="cv-{{ $project->id }}"
+                                    data-id="{{ $project->id }}"
+                                    data-url="{{ route('projects.toggleCV', $project->id) }}"
+                                    {{ $project->show_at_cv ? 'checked' : '' }}>
+                                <label class="form-check-label" for="cv-{{ $project->id }}">{{ __('Show in CV') }}</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -367,5 +375,23 @@
         }
     </script>
 @endforeach
+
+<script>
+    document.querySelectorAll('.toggle-cv').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            const url = this.dataset.url;
+            fetch(url, {
+                method: 'PATCH',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                },
+            })
+            .then(res => res.json())
+            .then(data => { this.checked = data.show_at_cv; })
+            .catch(() => { this.checked = !this.checked; });
+        });
+    });
+</script>
 
 @endsection

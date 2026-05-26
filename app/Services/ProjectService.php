@@ -22,6 +22,7 @@ class ProjectService
     public function getAllOrdered(string $orderBy = 'order', string $order = 'ASC'): Collection
     {
         return $this->projectRepository->query(
+            scopes: ['showAtCV'],
             order: $order,
             orderBy: $orderBy,
         );
@@ -51,8 +52,14 @@ class ProjectService
         return $this->projectRepository->delete($id);
     }
 
+    public function toggleCV(int $id): ?Model
+    {
+        $project = $this->projectRepository->getById($id);
+
+        return $this->projectRepository->update($id, ['show_at_cv' => !$project->show_at_cv]);
+    }
+
     /**
-     * Bulk-update the order column for projects.
      *
      * @param array $orderedIds [position0 => projectId, position1 => projectId, …]
      */

@@ -14,7 +14,7 @@ class ProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'projectName'     => 'required|string',
+            'name'     => 'required|string',
             'caption'         => 'required|string',
             'TechnologyStack' => 'required|string',
             'endDate'         => 'nullable|date',

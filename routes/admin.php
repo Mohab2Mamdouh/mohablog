@@ -77,6 +77,12 @@ Route::prefix('projects')->name('projects.')->controller(ProjectController::clas
     // Order Projects
     Route::get('/order', 'order')->name('order');
     Route::post('/update-order', 'updateOrder')->name('updateOrder');
+
+    // Toggle show at CV
+    Route::patch('/{id}/toggle-cv', 'toggleCV')->name('toggleCV');
+
+    // Toggle show_at_cv
+    Route::patch('/{id}/toggle-cv', 'toggleCV')->name('toggleCV');
 });
 
 Route::prefix('works')->name('works.')->controller(WorkController::class)->group(function ()

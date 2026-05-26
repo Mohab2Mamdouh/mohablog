@@ -34,7 +34,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="input-group">
-                                        <input type="text" name="projectName" id="projectName" class="form-control" placeholder="Project Name" required>
+                                        <input type="text" name="name" id="projectName" class="form-control" placeholder="Project Name" required>
                                         <label for="projectName">{{ __('Project Name') }}</label>
                                     </div>
                                 </div>

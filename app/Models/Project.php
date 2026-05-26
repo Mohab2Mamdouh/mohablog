@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
@@ -22,6 +25,7 @@ class Project extends Model
         'techmologyStack',
         'endDate',
         'order',
+        'show_at_cv',
     ];
 
     /**
@@ -30,9 +34,23 @@ class Project extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'endDate' => 'date',
+        'endDate'    => 'date',
+        'show_at_cv' => 'boolean',
     ];
 
+
+    #[Scope]
+    public function showAtCV(Builder $query, bool $value = true): void
+    {
+        $query->where('show_at_cv', $value);
+    }
+
+    public function formattedEndDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->endDate?->format('M Y'),
+        );
+    }
 
     public function getkills()
     {

@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\User\UserHomeController;
+use App\Http\Controllers\Auth\LoginController;
 
 
 /*
@@ -37,7 +37,9 @@ Route::get('/template/code-first', [UserHomeController::class, 'templateCodeFirs
 Route::get('/template/architecture', [UserHomeController::class, 'templateArchitecture'])->name('template.architecture');
 Route::get('/template/minimalist', [UserHomeController::class, 'templateMinimalist'])->name('template.minimalist');
 
-Auth::routes();
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Optimize Clear Route
 Route::get('/artisan/optimize-clear', function () {

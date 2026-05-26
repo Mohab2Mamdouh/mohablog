@@ -24,8 +24,8 @@ Route::controller(UserHomeController::class)->group(function ()
         return redirect(route('portfolio'));
     })->name('home.portfolio');
     Route::get('/downloadPDF','downloadPDF')->name('downloadPDF');
-    Route::get('/PDF/view/','pdfview')->name('viewPDF');
-    Route::get('/PDF/view2/','pdfview2')->name('viewPDF2');
+    Route::get('/PDF/view/','PDFView')->name('viewPDF');
+    Route::get('/PDF/view2/','PDFView2')->name('viewPDF2');
 });
 
 Route::get('/', [UserHomeController::class, 'templateMinimalist'])->name('portfolio');

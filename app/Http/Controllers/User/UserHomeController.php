@@ -39,12 +39,12 @@ class UserHomeController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View view pdf.blade.php
      */
-    public function pdfview()
+    public function PDFView()
     {
         return view('pdf', $this->getPortfolioData());
     }
 
-    public function pdfview2()
+    public function PDFView2()
     {
         return view('pdf2', $this->getPortfolioData());
     }

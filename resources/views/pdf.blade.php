@@ -299,9 +299,8 @@
         @endforeach
     </div>
 
-    <!-- SKILLS: use section-breakable so title stays with first row,
-         but rows can flow across pages if there are many skill groups -->
-    <div class="section-breakable">
+    <!-- SKILLS: forced to start on page 2 -->
+    <div class="section-breakable" style="page-break-before: always;">
         <div class="section-title">Skills</div>
         @php
             $allSkills = [];

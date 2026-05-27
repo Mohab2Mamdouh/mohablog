@@ -62,8 +62,8 @@ class UserHomeController extends Controller
         $pdf = PDF::loadView('pdf', $data, [], [
             'mode'              => 'utf-8',
             'format'            => 'A4',
-            'margin_top'        => 0,
-            'margin_bottom'     => 0,
+            'margin_top'        => 10,
+            'margin_bottom'     => 10,
             'margin_left'       => 0,
             'margin_right'      => 0,
             'margin_header'     => 0,

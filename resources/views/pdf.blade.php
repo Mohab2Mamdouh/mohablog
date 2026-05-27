@@ -438,7 +438,7 @@
                                         'Level 3' => 'High Intermediate',
                                         'Level 4' => 'Advanced',
                                         'Level 5' => 'Native',
-                                        default => 'No Knowledge'
+                                        default => $sl->level,
                                     };
                                 @endphp
                                 <td>

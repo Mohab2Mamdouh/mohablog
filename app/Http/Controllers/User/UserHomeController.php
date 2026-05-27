@@ -9,7 +9,7 @@ use App\Services\SkillService;
 use App\Services\SpeakingLanguageService;
 use App\Services\UserService;
 use App\Services\WorkExpService;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Mccarlosen\LaravelMpdf\Facades\LaravelMpdf as PDF;
 
 class UserHomeController extends Controller
 {
@@ -57,16 +57,20 @@ class UserHomeController extends Controller
      */
     public function downloadPDF()
     {
-        set_time_limit(-100);
         $data = $this->getPortfolioData();
-        $pdf = Pdf::loadView('pdf', $data)
-            ->setPaper('a4', 'portrait');
 
-        $strArray = explode(' ', $data['user']->fullName);
-        $firstName = $strArray[0];
-        $lastName = $strArray[1];
+        $pdf = PDF::loadView('pdf', $data, [], [
+            'mode'              => 'utf-8',
+            'format'            => 'A4',
+            'margin_top'        => 0,
+            'margin_bottom'     => 0,
+            'margin_left'       => 0,
+            'margin_right'      => 0,
+            'margin_header'     => 0,
+            'margin_footer'     => 0,
+        ]);
 
-        return $pdf->download($firstName . '-' . $lastName . '-C.V.pdf');
+        return $pdf->download(str_replace(' ', '-',$data['user']->fullName). '-C.V.pdf');
     }
 
 

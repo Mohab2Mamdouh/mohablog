@@ -78,28 +78,27 @@
             </div>
         </div>
     </div>
-    <script>
-        let overlay = $('.overlay');
-        overlay.css('height', $('body').css('height'));
-        function openForm{{ $i }}() {
-            for (let index = 0; index < {{count($works)}}; index++) {
-                if (index === {{$i}}) {
-                    continue;
-                }
-                console.log(index);
-                $('#myForm_' + index).css('display', 'none');
-            }
-            $('#myForm_' + {{ $i }}).css('display', 'block');
-            overlay.css('display', 'block');
-
-        }
-
-        function closeForm{{ $i }}() {
-            $('#myForm_' + {{ $i }}).css('display', 'none');
-            overlay.css('display', 'none');
-        }
-    </script>
 @endfor
+
+<script>
+    var overlay = $('.overlay');
+    overlay.css('height', $('body').css('height'));
+
+    @for ($i = 0; $i < count($works); $i++)
+    function openForm{{ $i }}() {
+        for (var index = 0; index < {{ count($works) }}; index++) {
+            if (index === {{ $i }}) continue;
+            $('#myForm_' + index).css('display', 'none');
+        }
+        $('#myForm_{{ $i }}').css('display', 'block');
+        overlay.css('display', 'block');
+    }
+    function closeForm{{ $i }}() {
+        $('#myForm_{{ $i }}').css('display', 'none');
+        overlay.css('display', 'none');
+    }
+    @endfor
+</script>
 
 
 

@@ -26,6 +26,7 @@ class PersonalInfoRequest extends FormRequest
             'behance'   => 'required|string',
             'github'    => 'required|string',
             'my_site'   => 'required|string',
+            'layout'    => 'required|string',
         ];
     }
 }

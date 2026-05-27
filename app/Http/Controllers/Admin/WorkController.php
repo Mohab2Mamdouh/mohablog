@@ -10,7 +10,9 @@ class WorkController extends Controller
 {
     public function __construct(
         private readonly WorkExpService $workExpService
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
     /**
      * Display a listing of the resource.

@@ -19,7 +19,9 @@ class UserHomeController extends Controller
         private readonly SpeakingLanguageService $speakingLanguageService,
         private readonly UserService $userService,
         private readonly WorkExpService $workExpService,
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
     /**
      * It gets all the projects, skills, speaking languages, work experiences, and the user from the
@@ -58,16 +60,17 @@ class UserHomeController extends Controller
     public function downloadPDF()
     {
         $data = $this->getPortfolioData();
+        $data['footerDate'] = now()->format('F Y');
 
-        $pdf = PDF::loadView('pdf', $data, [], [
-            'mode'              => 'utf-8',
-            'format'            => 'A4',
-            'margin_top'        => 10,
-            'margin_bottom'     => 10,
-            'margin_left'       => 0,
-            'margin_right'      => 0,
-            'margin_header'     => 0,
-            'margin_footer'     => 0,
+        $pdf = PDF::loadView($data['user']->layout, $data, [], [
+            'mode'           => 'utf-8',
+            'format'         => 'A4',
+            'margin_top'     => 10,
+            'margin_bottom'  => 25,   // space for footer
+            'margin_left'    => 0,
+            'margin_right'   => 0,
+            'margin_header'  => 0,
+            'margin_footer'  => 15,    // footer height
         ]);
 
         return $pdf->download(str_replace(' ', '-',$data['user']->fullName). '-C.V.pdf');

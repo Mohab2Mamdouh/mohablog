@@ -11,7 +11,9 @@ class ProjectController extends Controller
 {
     public function __construct(
         private readonly ProjectService $projectService
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
     /**
      * Display a listing of the resource.

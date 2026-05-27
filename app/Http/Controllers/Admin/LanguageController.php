@@ -10,7 +10,9 @@ class LanguageController extends Controller
 {
     public function __construct(
         private readonly SpeakingLanguageService $speakingLanguageService
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
     /**
      * Display a listing of the resource.
@@ -50,12 +52,11 @@ class LanguageController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View
      */
     public function edit($id)
     {
-        $lang = $this->speakingLanguageService->getById($id);
-        return view('Admin.Slanguage.edit', compact('lang'));
+//        $lang = $this->speakingLanguageService->getById($id);
+//        return view('Admin.Slanguage.edit', compact('lang'));
     }
 
     /**

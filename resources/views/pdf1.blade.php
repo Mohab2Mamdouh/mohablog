@@ -4,297 +4,311 @@
     <meta charset="UTF-8">
     <title>{{ $user->fullName }} - CV</title>
     <style>
-        @page { margin: 0; }
-        @page :left  { margin-top: 30px; }
-        @page :right { margin-top: 30px; }
+        @page { margin: 54pt 54pt 72pt 54pt; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: Helvetica, Arial, sans-serif;
-            color: #1f2937;
-            font-size: 10pt;
-            line-height: 1.6;
+            color: #1a1a2e;
+            font-size: 9pt;
+            line-height: 1.45;
+            background: #ffffff;
         }
 
         /* ─── HEADER ─────────────────────────────────────────── */
-        .header {
-            padding: 40px 60px 28px;
-            background: #1e293b;
-            color: #ffffff;
-        }
         .name {
-            font-size: 28pt;
+            font-size: 22pt;
             font-weight: bold;
-            line-height: 1.1;
-            margin-bottom: 6px;
-            color: #ffffff;
+            color: #1a1a2e;
+            line-height: 1.2;
+            margin-bottom: 4px;
         }
         .subtitle {
             font-size: 10pt;
-            color: #94a3b8;
-            margin-bottom: 14px;
+            color: #1a56a0;
+            margin-bottom: 6px;
+            line-height: 1.4;
         }
-        .subtitle strong { color: #60a5fa; }
-
-        .contact-table { border-collapse: collapse; }
-        .contact-table td {
+        .contact {
             font-size: 8.5pt;
-            color: #cbd5e1;
-            line-height: 1.8;
-            padding: 0;
-            vertical-align: top;
+            color: #555555;
+            line-height: 1.5;
+            margin-bottom: 2px;
         }
-        .contact-label {
-            color: #ffffff;
-            font-weight: bold;
-            padding-right: 8px;
-        }
+        .contact a { color: #1a56a0; text-decoration: none; }
 
-        /* ─── CONTENT WRAPPER ────────────────────────────────── */
-        .content { padding: 10px 60px 30px; }
-
-        /* ─── SECTION TITLES ─────────────────────────────────── */
-        .section         { margin-top: 18px; page-break-inside: avoid; }
-        .section-breakable { margin-top: 18px; }
+        /* ─── SECTIONS ───────────────────────────────────────── */
+        .section { margin-top: 16px; }
 
         .section-title {
-            font-size: 11.5pt;
+            font-size: 9pt;
             font-weight: bold;
-            color: #1e293b;
+            color: #1a56a0;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #3b82f6;
-            margin-bottom: 10px;
-            page-break-after: avoid;
+            letter-spacing: 1.5pt;
+            margin-bottom: 3px;
+        }
+        .section-rule {
+            border: none;
+            border-bottom: 1.5pt solid #1a56a0;
+            margin-bottom: 8px;
         }
 
         /* ─── ABOUT ──────────────────────────────────────────── */
-        .about-text { font-size: 11pt; color: #4b5563; line-height: 1.6; }
+        .about-text {
+            font-size: 9pt;
+            color: #555555;
+            line-height: 1.45;
+        }
 
         /* ─── EXPERIENCE ─────────────────────────────────────── */
-        .work-item {
-            padding: 8px 0;
-            border-bottom: 1px solid #f1f5f9;
-            page-break-inside: avoid;
-        }
-        .work-item:last-child { border-bottom: none; }
+        .work-item { margin-bottom: 10px; page-break-inside: avoid; }
 
-        .work-table  { width: 100%; border-collapse: collapse; }
-        .work-left   { width: 130px; vertical-align: top; padding-right: 12px; padding-top: 1px; }
-        .work-right  { vertical-align: top; }
-
-        .work-date    { font-size: 9.5pt; color: #9ca3af; line-height: 1.5; }
-        .work-company { font-size: 10pt;  font-weight: bold; color: #3b82f6; margin-top: 2px; }
-        .work-role    { font-size: 11.5pt; font-weight: bold; color: #1e293b; margin-bottom: 2px; }
-        .work-desc    { font-size: 10pt; color: #6b7280; line-height: 1.5; margin-bottom: 3px; }
-        .work-env     { font-size: 9pt; color: #9ca3af; background: #f1f5f9; padding: 1px 6px; }
-
-        /* ─── SKILLS ─────────────────────────────────────────── */
-        .skill-type {
-            font-size: 9pt;
+        .work-title-line {
+            font-size: 10pt;
             font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #9ca3af;
+            color: #1a1a2e;
+            margin-bottom: 1px;
+            line-height: 1.3;
         }
-        .skill-list  { font-size: 10pt; color: #374151; line-height: 1.6; }
-        .skill-main  { font-weight: bold; color: #1d4ed8; }
+        .work-title-line .company { color: #1a56a0; font-weight: normal; }
+        .work-title-line .sep     { color: #888888; }
+
+        .work-meta {
+            font-size: 8.5pt;
+            color: #888888;
+            font-style: italic;
+            margin-bottom: 3px;
+        }
+        .work-desc {
+            font-size: 9pt;
+            color: #555555;
+            line-height: 1.45;
+            margin-bottom: 3px;
+        }
+        .work-stack {
+            font-size: 8pt;
+            color: #888888;
+            font-style: italic;
+            line-height: 1.3;
+        }
+        .work-stack b { font-style: normal; }
 
         /* ─── PROJECTS ───────────────────────────────────────── */
         .proj-card {
-            border-left: 3px solid #3b82f6;
-            padding: 8px 12px;
+            border-left: 2.5pt solid #1a56a0;
+            padding: 6px 10px;
             margin-bottom: 10px;
             page-break-inside: avoid;
         }
-        .proj-name    { font-size: 11pt; font-weight: bold; color: #1e293b; margin-bottom: 2px; }
-        .proj-ongoing { font-size: 8pt; color: #22c55e; font-weight: bold; }
-        .proj-caption { font-size: 9.5pt; color: #6b7280; line-height: 1.35; margin-bottom: 3px; }
-        .proj-tech    { font-size: 8.5pt; color: #9ca3af; }
-        .proj-url     { font-size: 8.5pt; color: #3b82f6; }
+        .proj-name {
+            font-size: 10pt;
+            font-weight: bold;
+            color: #1a1a2e;
+            margin-bottom: 2px;
+        }
+        .proj-status {
+            font-size: 8pt;
+            color: #888888;
+            font-style: italic;
+            font-weight: normal;
+        }
+        .proj-desc {
+            font-size: 9pt;
+            color: #555555;
+            line-height: 1.4;
+            margin-bottom: 3px;
+        }
+        .proj-stack {
+            font-size: 8pt;
+            color: #888888;
+            font-style: italic;
+        }
+        .proj-stack b { font-style: normal; }
+        .proj-url {
+            font-size: 8pt;
+            color: #1a56a0;
+            margin-top: 2px;
+        }
+
+        /* ─── SKILLS ─────────────────────────────────────────── */
+        .skills-table { width: 100%; border-collapse: collapse; }
+        .skills-table td { vertical-align: top; padding: 3px 0; }
+        .skill-label {
+            font-size: 9pt;
+            font-weight: bold;
+            color: #1a1a2e;
+            width: 110pt;
+            padding-right: 8pt;
+            white-space: nowrap;
+        }
+        .skill-value {
+            font-size: 9pt;
+            color: #555555;
+            line-height: 1.45;
+        }
 
         /* ─── LANGUAGES ──────────────────────────────────────── */
-        .lang-name  { font-size: 11pt; font-weight: bold; color: #1e293b; }
-        .lang-level { font-size: 9pt; color: #9ca3af; }
+        .lang-table { border-collapse: collapse; }
+        .lang-table td { padding-right: 28pt; vertical-align: top; padding-top: 3px; }
+        .lang-name  { font-size: 10pt; font-weight: bold; color: #1a1a2e; }
+        .lang-level { font-size: 8.5pt; color: #888888; }
 
         /* ─── FOOTER ─────────────────────────────────────────── */
         .footer-area {
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 2px solid #1e293b;
+            margin-top: 18px;
+            padding-top: 8px;
+            border-top: 2pt solid #1a1a2e;
         }
         .footer-byline {
             text-align: right;
-            font-size: 9pt;
-            color: #9ca3af;
+            font-size: 8.5pt;
+            color: #888888;
             line-height: 1.8;
         }
-        .footer-byline strong { color: #1e293b; font-size: 10pt; }
+        .footer-byline strong { color: #1a1a2e; font-size: 9.5pt; }
+        @page {
+            margin: 54pt 54pt 30pt 54pt; /* top right bottom left — bottom makes room for footer */
+            footer: html_cv-footer;       /* binds the footer to every page */
+        }
     </style>
 </head>
 <body>
 
-{{-- ═══════════════════════════ HEADER ═══════════════════════════ --}}
-<div class="header">
-    <div class="name">{{ $user->fullName }}</div>
-    <div class="subtitle">
-        {{ $user->title }} &middot; <strong>{{ $user->expYear }}+ Years Experience</strong>
-    </div>
-    <table class="contact-table" cellpadding="0" cellspacing="0">
+<!--mpdf
+<htmlpagefooter name="cv-footer">
+    <table style="width:100%; border-top: 2pt solid #1a1a2e; padding-top: 6px;">
         <tr>
-            <td class="contact-label">Email:</td>
-            <td style="padding-right:24px;">{{ $user->email }}</td>
-            <td class="contact-label">Phone:</td>
-            <td style="padding-right:24px;">{{ $user->phone }}</td>
-            <td class="contact-label">Location:</td>
-            <td>{{ $user->address }}</td>
-        </tr>
-        <tr>
-            <td class="contact-label">GitHub:</td>
-            <td style="padding-right:24px;">{{ $user->github }}</td>
-            <td class="contact-label">LinkedIn:</td>
-            <td colspan="3">{{ $user->linked_in }}</td>
-        </tr>
+            <td style="font-size:8.5pt; color:#888888; text-align:left;">
+                Professional CV &middot; <?php echo $footerDate; ?>
+    </td>
+    <td style="font-size:9.5pt; color:#1a1a2e; font-weight:bold; text-align:right;">
+<?php echo $user->fullName; ?>
+    </td>
+</tr>
+</table>
+</htmlpagefooter>
+mpdf-->
+
+{{-- ═══════════════════════ HEADER ══════════════════════════ --}}
+<div class="name">{{ $user->fullName }}</div>
+<div class="subtitle">{{ $user->title }} &nbsp;&middot;&nbsp; +{{ $user->expYear }} Years Experience</div>
+<div class="contact">{{ $user->email }} &nbsp;&middot;&nbsp; {{ $user->phone }} &nbsp;&middot;&nbsp; {{ $user->address }}</div>
+<div class="contact">
+    <a href="https://{{ $user->github }}">{{ $user->github }}</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://{{ $user->linked_in }}">{{ $user->linked_in }}</a>
+</div>
+
+{{-- ═══════════════════════ ABOUT ════════════════════════════ --}}
+<div class="section">
+    <div class="section-title">About</div>
+    <hr class="section-rule">
+    <p class="about-text">{{ $user->profile }}</p>
+</div>
+
+{{-- ═══════════════════════ EXPERIENCE ═══════════════════════ --}}
+<div class="section">
+    <div class="section-title">Experience</div>
+    <hr class="section-rule">
+
+    @foreach ($works as $w)
+        <div class="work-item">
+            <div class="work-title-line">
+                {{ $w->title }}
+                <span class="sep">&nbsp;&middot;&nbsp;</span>
+                <span class="company">{{ $w->companyName }}</span>
+            </div>
+            <div class="work-meta">
+                {{ \Carbon\Carbon::parse($w->startDate)->format('M Y') }} &ndash;
+                {{ $w->endDate ? \Carbon\Carbon::parse($w->endDate)->format('M Y') : 'Present' }}
+            </div>
+            @if ($w->caption)
+                <div class="work-desc">{{ $w->caption }}</div>
+            @endif
+            @if ($w->environment)
+                <div class="work-stack"><b>Stack:</b> {{ $w->environment }}</div>
+            @endif
+        </div>
+    @endforeach
+</div>
+
+{{-- ═══════════════════════ SKILLS ═══════════════════════════ --}}
+<div class="section">
+    <div class="section-title">Skills</div>
+    <hr class="section-rule">
+    <table class="skills-table" cellpadding="0" cellspacing="0">
+        @foreach (\App\Enums\SkillType::values() as $type)
+            @php
+                $varName = str_replace(' ', '_', $type);
+                $items   = $$varName ?? collect();
+            @endphp
+            @if ($items->count())
+                <tr>
+                    <td class="skill-label">{{ $type }}</td>
+                    <td class="skill-value">
+                        @foreach ($items as $skill)
+                            {{ $skill->languageName }}@if (!$loop->last), @endif
+                        @endforeach
+                    </td>
+                </tr>
+            @endif
+        @endforeach
     </table>
 </div>
 
-{{-- ═══════════════════════════ PAGE 1 ════════════════════════════ --}}
-<div class="content">
+{{-- ═══════════════════════ PROJECTS ═════════════════════════ --}}
+<div class="section">
+    <div class="section-title">Projects</div>
+    <hr class="section-rule">
 
-    {{-- ABOUT --}}
-    <div class="section">
-        <div class="section-title">About</div>
-        <p class="about-text">{{ $user->profile }}</p>
-    </div>
-
-    {{-- EXPERIENCE --}}
-    <div class="section-breakable">
-        <div class="section-title">Experience</div>
-
-        @foreach ($works as $w)
-            <div class="work-item">
-                <table class="work-table" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td class="work-left">
-                            <div class="work-date">
-                                {{ \Carbon\Carbon::parse($w->startDate)->format('M Y') }} &ndash;<br>
-                                @if ($w->endDate)
-                                    {{ \Carbon\Carbon::parse($w->endDate)->format('M Y') }}
-                                @else
-                                    Present
-                                @endif
-                            </div>
-                            <div class="work-company">{{ $w->companyName }}</div>
-                        </td>
-                        <td class="work-right">
-                            <div class="work-role">{{ $w->title }}</div>
-                            @if ($w->caption)
-                                <div class="work-desc">{{ $w->caption }}</div>
-                            @endif
-                            @if ($w->environment)
-                                <div class="work-env">{{ $w->environment }}</div>
-                            @endif
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        @endforeach
-    </div>
-
-</div>{{-- end page 1 --}}
-
-{{-- ═══════════════════════════ PAGE 2 ════════════════════════════ --}}
-<pagebreak />
-<div class="content">
-
-    {{-- SKILLS --}}
-    <div class="section">
-        <div class="section-title">Skills</div>
-        <table style="width:100%;border-collapse:collapse;" cellpadding="0" cellspacing="0">
-            @foreach (\App\Enums\SkillType::values() as $type)
-                @php
-                    $varName = str_replace(' ', '_', $type);
-                    $items   = $$varName ?? collect();
-                @endphp
-                @if ($items->count())
-                    <tr>
-                        <td style="width:110px; vertical-align:top; padding:4px 10px 4px 0;">
-                            <div class="skill-type">{{ $type }}</div>
-                        </td>
-                        <td style="vertical-align:top; padding:4px 0;">
-                            <div class="skill-list">
-                                @foreach ($items as $skill)
-                                    <span class="{{ $skill->main ? 'skill-main' : '' }}">{{ $skill->languageName }}</span>@if (!$loop->last), @endif
-                                @endforeach
-                            </div>
-                        </td>
-                    </tr>
-                @endif
-            @endforeach
-        </table>
-    </div>
-
-    {{-- PROJECTS --}}
-    <div style="margin-top:18px;">
-        <div class="section-title">Projects</div>
-
-        @foreach ($projects as $p)
-            <div class="proj-card">
-                <div class="proj-name">
-                    {{ $p->name }}
-                    @if (! $p->endDate)
-                        <span class="proj-ongoing">&bull; ongoing</span>
-                    @endif
-                </div>
-                @if ($p->description ?: $p->caption)
-                    <div class="proj-caption">{{ $p->description ?: $p->caption }}</div>
-                @endif
-                @if ($p->techmologyStack)
-                    <div class="proj-tech">{{ $p->techmologyStack }}</div>
-                @endif
-                @if ($p->appURL)
-                    <div class="proj-url">{{ $p->appURL }}</div>
+    @foreach ($projects as $p)
+        <div class="proj-card">
+            <div class="proj-name">
+                {{ $p->name }}
+                @if (! $p->endDate)
+                    <span class="proj-status">&middot; ongoing</span>
                 @endif
             </div>
-        @endforeach
-    </div>
-
-    {{-- LANGUAGES --}}
-    <div class="section">
-        <div class="section-title">Languages</div>
-        <table style="border-collapse:collapse;" cellpadding="0" cellspacing="0">
-            <tr>
-                @foreach ($sLanguages as $sl)
-                    @php
-                        $levelLabel = match ($sl->level) {
-                            'Level 1' => 'Elementary',
-                            'Level 2' => 'Low Intermediate',
-                            'Level 3' => 'High Intermediate',
-                            'Level 4' => 'Advanced',
-                            'Level 5' => 'Native',
-                            default   => $sl->level,
-                        };
-                    @endphp
-                    <td style="padding-right:30px; vertical-align:top;">
-                        <div class="lang-name">{{ $sl->languageName }}</div>
-                        <div class="lang-level">{{ $levelLabel }}</div>
-                    </td>
-                @endforeach
-            </tr>
-        </table>
-    </div>
-
-    {{-- FOOTER --}}
-    <div class="footer-area">
-        <div class="footer-byline">
-            <strong>{{ $user->fullName }}</strong><br>
-            Professional CV &middot; {{ now()->format('F Y') }}
+            @if ($p->description ?: $p->caption)
+                <div class="proj-desc">{{ $p->description ?: $p->caption }}</div>
+            @endif
+            @if ($p->techmologyStack)
+                <div class="proj-stack"><b>Stack:</b> {{ $p->techmologyStack }}</div>
+            @endif
+            @if ($p->appURL)
+                <div class="proj-url">{{ $p->appURL }}</div>
+            @endif
         </div>
-    </div>
+    @endforeach
+</div>
 
-</div>{{-- end page 2 --}}
+{{-- ═══════════════════════ LANGUAGES ════════════════════════ --}}
+<div class="section">
+    <div class="section-title">Languages</div>
+    <hr class="section-rule">
+     <table class="lang-table" style="border-collapse: collapse;">
+        <tr>
+            @foreach ($sLanguages as $sl)
+                @php
+                    $levelLabel = match ($sl->level) {
+                        'Level 1' => 'Elementary',
+                        'Level 2' => 'Low Intermediate',
+                        'Level 3' => 'High Intermediate',
+                        'Level 4' => 'Advanced',
+                        'Level 5' => 'Native',
+                        default   => $sl->level,
+                    };
+                @endphp
+                <td>
+                    <div class="lang-name">{{ $sl->languageName }}</div>
+                    <div class="lang-level">{{ $levelLabel }}</div>
+                </td>
+            @endforeach
+        </tr>
+    </table>
+</div>
 
 </body>
 </html>

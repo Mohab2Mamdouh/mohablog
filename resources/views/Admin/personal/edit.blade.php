@@ -115,6 +115,43 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <label class="form-label fw-bold mb-3">{{ __('Choose Layout') }}</label>
+
+                                        <div class="d-flex gap-3">
+
+                                            <!-- Layout 1 -->
+                                            <input type="radio"
+                                                   class="btn-check"
+                                                   name="layout"
+                                                   id="layout1"
+                                                   value="pdf1"
+                                                   autocomplete="off"
+                                                {{ $user->layout == 'pdf1' ? 'checked' : '' }}>
+
+                                            <label class="btn btn-outline-primary w-100 py-3 text-center" for="layout1">
+                                                <div class="fw-semibold">{{ __('Layout 1') }}</div>
+                                                <small>{{ __('Simple & clean design') }}</small>
+                                            </label>
+
+                                            <!-- Layout 2 -->
+                                            <input type="radio"
+                                                   class="btn-check"
+                                                   name="layout"
+                                                   id="layout2"
+                                                   value="pdf"
+                                                   autocomplete="off"
+                                                {{ $user->layout == 'pdf' ? 'checked' : '' }}>
+
+                                            <label class="btn btn-outline-primary w-100 py-3 text-center" for="layout2">
+                                                <div class="fw-semibold">{{ __('Layout 2') }}</div>
+                                                <small>{{ __('Detailed & structured') }}</small>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="row">
                                     <div class="col-xl-6">

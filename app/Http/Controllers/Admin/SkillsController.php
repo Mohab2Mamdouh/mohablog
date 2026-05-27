@@ -10,7 +10,9 @@ class SkillsController extends Controller
 {
     public function __construct(
         private readonly SkillService $skillService
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
     /**
      * Display a listing of the resource.

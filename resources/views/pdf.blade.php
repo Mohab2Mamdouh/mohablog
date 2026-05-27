@@ -100,10 +100,9 @@
         .skill-list { font-size: 10pt; color: #374151; line-height: 1.6; }
         .skill-main { font-weight: bold; color: #1d4ed8; }
 
-        /* ── LANGUAGES ── */
-        .lang-section { margin-top: 14px; }
-        .lang-table { border-collapse: collapse; }
-        .lang-table td { padding: 2px 20px 2px 0; vertical-align: top; }
+         /* ── LANGUAGES ── */
+         .lang-table { border-collapse: collapse; }
+         .lang-table td { padding: 2px 20px 2px 0; vertical-align: top; }
         .lang-name { font-size: 11pt; font-weight: bold; color: #1e293b; }
         .lang-level { font-size: 9pt; color: #9ca3af; }
 
@@ -136,7 +135,7 @@
 <div class="header">
     <div class="name">{{ $user->fullName }}</div>
     <div style="color:#94a3b8;font-size:10pt;margin-bottom:14px;">
-        {{ $user->title }} &middot; <strong style="color:#60a5fa;">{{ $user->expYear }}+ Years Experience</strong>
+        {{ $user->title }} &middot; <strong style="color:#60a5fa;">+{{ $user->expYear }} Years Experience</strong>
     </div>
     <table class="contact-table" cellpadding="0" cellspacing="0">
         <tr>

@@ -21,6 +21,10 @@ class UserHomeController extends Controller
         private readonly WorkExpService $workExpService,
     ) {
         parent::__construct();
+        $this->middleware('auth')->except([
+            'index', 'PDFView', 'PDFView2', 'downloadPDF',
+            'templateTerminal', 'templateCodeFirst', 'templateArchitecture', 'templateMinimalist',
+        ]);
     }
 
     /**

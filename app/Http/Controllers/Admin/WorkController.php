@@ -12,6 +12,7 @@ class WorkController extends Controller
         private readonly WorkExpService $workExpService
     ) {
         parent::__construct();
+        $this->middleware('auth');
     }
 
     /**

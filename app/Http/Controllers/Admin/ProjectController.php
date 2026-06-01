@@ -13,6 +13,7 @@ class ProjectController extends Controller
         private readonly ProjectService $projectService
     ) {
         parent::__construct();
+        $this->middleware('auth');
     }
 
     /**

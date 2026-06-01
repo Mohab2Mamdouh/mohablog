@@ -13,7 +13,7 @@ class PersonalController extends Controller
     public function __construct(
         private readonly UserService $userService
     ) {
-        parent::__construct();
+        $this->middleware('auth');
     }
 
 

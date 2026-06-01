@@ -12,6 +12,7 @@ class SkillsController extends Controller
         private readonly SkillService $skillService
     ) {
         parent::__construct();
+        $this->middleware('auth');
     }
 
     /**

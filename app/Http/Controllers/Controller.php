@@ -17,8 +17,5 @@ class Controller extends BaseController
 
         $user = User::first();
         view()->share('user', $user);
-
-        $this->middleware('auth');
-
     }
 }

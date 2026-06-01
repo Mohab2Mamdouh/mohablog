@@ -14,6 +14,7 @@ class ImageProcessingController extends Controller
         private readonly ImageProcessingService $imageProcessingService
     ) {
         parent::__construct();
+        $this->middleware('auth');
     }
 
     /**

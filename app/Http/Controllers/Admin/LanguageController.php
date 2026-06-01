@@ -12,6 +12,7 @@ class LanguageController extends Controller
         private readonly SpeakingLanguageService $speakingLanguageService
     ) {
         parent::__construct();
+        $this->middleware('auth');
     }
 
     /**

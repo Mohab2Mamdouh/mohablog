@@ -270,10 +270,10 @@ mpdf-->
                     <span class="proj-status">&middot; ongoing</span>
                 @endif
             </div>
-            @php $desc = trim((string) ($p->description ?: $p->caption)); @endphp
-            @if ($desc)
+            {{-- The CV prints the short summary, never the full case study. --}}
+            @if ($p->cv_summary)
                 <div class="proj-desc">
-                    @foreach (preg_split('/\R\s*\R/', $desc) as $paragraph)
+                    @foreach (preg_split('/\R\s*\R/', $p->cv_summary) as $paragraph)
                         <p>{{ $paragraph }}</p>
                     @endforeach
                 </div>

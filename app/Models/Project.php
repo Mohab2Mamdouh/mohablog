@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Project extends Model
 {
@@ -21,6 +22,7 @@ class Project extends Model
         'link',
         'appURL',
         'caption',
+        'summary',
         'description',
         'techmologyStack',
         'endDate',
@@ -49,6 +51,20 @@ class Project extends Model
     {
         return Attribute::make(
             get: fn () => $this->endDate?->format('M Y'),
+        );
+    }
+
+    /**
+     * What the CV should print for this project: the short summary if one was
+     * written, otherwise the caption, otherwise a trimmed description — so a
+     * full case study never lands in the PDF by accident.
+     */
+    public function cvSummary(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => trim((string) $this->summary)
+                ?: trim((string) $this->caption)
+                ?: Str::limit(trim(strip_tags((string) $this->description)), 300),
         );
     }
 

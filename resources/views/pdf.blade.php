@@ -236,8 +236,8 @@
                         <span class="proj-ongoing">&bull; ongoing</span>
                     @endif
                 </div>
-                @if($p->description ?: $p->caption)
-                    <div class="proj-caption">{{ $p->description ?: $p->caption }}</div>
+                @if($p->cv_summary)
+                    <div class="proj-caption">{{ $p->cv_summary }}</div>
                 @endif
                 <div class="proj-tech">{{ $p->techmologyStack }}</div>
                 @if($p->appURL)

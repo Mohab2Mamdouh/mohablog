@@ -64,6 +64,14 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="input-group">
+                                        <textarea name="summary" class="form-control" placeholder="Summary" id="summary" cols="30" rows="3">{{ $project->summary }}</textarea>
+                                        <label for="summary">{{ __('Summary (printed in the CV/PDF)') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group">
                                         <textarea name="description" class="form-control" placeholder="Description" id="description" cols="30" rows="3">{{ $project->description }}</textarea>
                                         <label for="description">{{ __('Description') }}</label>
                                     </div>

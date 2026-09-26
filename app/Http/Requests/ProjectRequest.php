@@ -20,6 +20,7 @@ class ProjectRequest extends FormRequest
             'endDate'         => 'nullable|date',
             'appURL'          => 'nullable|string',
             'URL'             => 'nullable|string',
+            'summary'         => 'nullable|string',
             'description'     => 'nullable|string',
             'link'            => 'nullable|string',
         ];

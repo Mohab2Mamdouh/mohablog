@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code-First - {{ $user->fullName }}</title>
+    @include('partials.machine-readable-meta')
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -80,6 +81,7 @@
     </style>
 </head>
 <body>
+    @include('partials.markdown-button')
 <div class="container">
 
     {{-- Header --}}

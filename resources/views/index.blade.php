@@ -4,6 +4,14 @@
 
 @extends('layouts.app')
 
+@push('head')
+    @include('partials.machine-readable-meta')
+@endpush
+
+@push('floating')
+    @include('partials.markdown-button')
+@endpush
+
 @section('content')
 
 <section class="hero-section">

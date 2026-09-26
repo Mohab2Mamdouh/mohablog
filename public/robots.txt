@@ -1,2 +1,5 @@
 User-agent: *
 Disallow:
+
+# Machine-readable CV for AI agents and scripts: /cv.md
+# (the same Markdown document is served on / when an AI user-agent is detected)

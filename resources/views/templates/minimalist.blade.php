@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $user->fullName }} - {{ $user->currentPosition }}</title>
+    <meta name="description" content="{{ Str::limit(strip_tags($user->profile), 155) }}">
+
+    @include('partials.machine-readable-meta')
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -227,6 +231,7 @@
 </head>
 <body class="dark">
     <a href="{{ route('downloadPDF') }}" class="cv-download">↓ Download CV</a>
+    @include('partials.markdown-button')
     <button class="dark-mode-toggle" onclick="toggleDark()">◐</button>
 
     <div class="container">

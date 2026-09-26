@@ -30,6 +30,14 @@ Route::controller(UserHomeController::class)->group(function ()
 
 Route::get('/', [UserHomeController::class, 'templateMinimalist'])->name('portfolio');
 
+// Machine-readable CV for AI agents / scripts. The same document is served on
+// "/" automatically when the visitor's User-Agent looks like an AI crawler.
+Route::get('/cv.md', [UserHomeController::class, 'cvMarkdown'])->name('cv.markdown');
+Route::get('/llms.txt', [UserHomeController::class, 'cvMarkdown'])->name('llms.txt');
+
+// Human-facing preview of that same Markdown document.
+Route::get('/cv/preview', [UserHomeController::class, 'cvMarkdownPreview'])->name('cv.markdown.preview');
+
 // Design Templates Preview Routes
 Route::get('/template/original', [UserHomeController::class, 'index'])->name('template.original');
 Route::get('/template/terminal', [UserHomeController::class, 'templateTerminal'])->name('template.terminal');

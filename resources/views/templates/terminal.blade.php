@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terminal Style - {{ $user->fullName }}</title>
+    @include('partials.machine-readable-meta')
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -80,6 +81,7 @@
     </style>
 </head>
 <body>
+    @include('partials.markdown-button')
     <div class="terminal-header">
         <span class="terminal-btn btn-red"></span>
         <span class="terminal-btn btn-yellow"></span>

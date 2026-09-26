@@ -8,7 +8,11 @@ use App\Services\ProjectService;
 use App\Services\SkillService;
 use App\Services\SpeakingLanguageService;
 use App\Services\UserService;
+use App\Services\CvMarkdownService;
 use App\Services\WorkExpService;
+use App\Support\AiAgentDetector;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Mccarlosen\LaravelMpdf\Facades\LaravelMpdf as PDF;
 
 class UserHomeController extends Controller
@@ -19,6 +23,8 @@ class UserHomeController extends Controller
         private readonly SpeakingLanguageService $speakingLanguageService,
         private readonly UserService $userService,
         private readonly WorkExpService $workExpService,
+        private readonly CvMarkdownService $cvMarkdownService,
+        private readonly AiAgentDetector $aiAgentDetector,
     ) {
         parent::__construct();
     }
@@ -29,11 +35,9 @@ class UserHomeController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View index view is being returned.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->getPortfolioData();
-
-        return view('index', $data);
+        return $this->respondWithTemplate($request, 'index');
     }
 
     /**
@@ -95,23 +99,77 @@ class UserHomeController extends Controller
         ], $skillsData);
     }
 
-    public function templateTerminal()
+    public function templateTerminal(Request $request)
     {
-        return view('templates.terminal', $this->getPortfolioData());
+        return $this->respondWithTemplate($request, 'templates.terminal');
     }
 
-    public function templateCodeFirst()
+    public function templateCodeFirst(Request $request)
     {
-        return view('templates.code-first', $this->getPortfolioData());
+        return $this->respondWithTemplate($request, 'templates.code-first');
     }
 
-    public function templateArchitecture()
+    public function templateArchitecture(Request $request)
     {
-        return view('templates.architecture', $this->getPortfolioData());
+        return $this->respondWithTemplate($request, 'templates.architecture');
     }
 
-    public function templateMinimalist()
+    public function templateMinimalist(Request $request)
     {
-        return view('templates.minimalist', $this->getPortfolioData());
+        return $this->respondWithTemplate($request, 'templates.minimalist');
+    }
+
+    /**
+     * The CV as a plain Markdown document. Served explicitly at /cv.md and
+     * automatically on any CV template route when an AI agent is browsing.
+     *
+     * Pass ?raw=1 to get it as text/plain, which browsers render inline
+     * instead of downloading.
+     */
+    public function cvMarkdown(Request $request): Response
+    {
+        return $this->cvMarkdownResponse(
+            $request->boolean('raw') ? 'text/plain' : 'text/markdown'
+        );
+    }
+
+    /**
+     * Human-facing preview: shows the exact Markdown an AI agent receives.
+     */
+    public function cvMarkdownPreview()
+    {
+        $markdown = $this->cvMarkdownService->render($this->getPortfolioData());
+
+        return view('cv-markdown', [
+            'markdown' => $markdown,
+            'lines'    => substr_count($markdown, "\n") + 1,
+            'bytes'    => strlen($markdown),
+        ]);
+    }
+
+    /**
+     * Render an HTML template, unless an AI agent asked for the page — then
+     * hand back the Markdown version of the same CV.
+     */
+    private function respondWithTemplate(Request $request, string $view): Response
+    {
+        if ($this->aiAgentDetector->wantsMarkdown($request)) {
+            return $this->cvMarkdownResponse();
+        }
+
+        return response()
+            ->view($view, $this->getPortfolioData())
+            ->header('Vary', 'User-Agent, Accept');
+    }
+
+    private function cvMarkdownResponse(string $contentType = 'text/markdown'): Response
+    {
+        $markdown = $this->cvMarkdownService->render($this->getPortfolioData());
+
+        return response($markdown, 200, [
+            'Content-Type' => $contentType . '; charset=UTF-8',
+            'Vary'         => 'User-Agent, Accept',
+            'X-Robots-Tag' => 'all',
+        ]);
     }
 }

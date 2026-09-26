@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <title>{{ $user->fullName }} - CV</title>
     <style>
-        @page { margin: 54pt 54pt 72pt 54pt; }
+        /* Single source of truth for the page box. The footer is drawn
+           `margin-footer` from the paper edge, so the bottom margin must be
+           LARGER than it — otherwise body text prints over the footer. */
+        @page {
+            margin-top: 54pt;
+            margin-right: 54pt;
+            margin-bottom: 64pt;
+            margin-left: 54pt;
+            margin-footer: 24pt;
+            footer: html_cv-footer;
+        }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -54,6 +64,8 @@
             border-bottom: 1.5pt solid #1a56a0;
             margin-bottom: 8px;
         }
+        /* A heading + its rule must stay with the content they introduce. */
+        .section-title, .section-rule { page-break-after: avoid; }
 
         /* ─── ABOUT ──────────────────────────────────────────── */
         .about-text {
@@ -120,6 +132,8 @@
             line-height: 1.4;
             margin-bottom: 3px;
         }
+        .proj-desc p { margin-bottom: 4px; }
+        .proj-desc p:last-child { margin-bottom: 0; }
         .proj-stack {
             font-size: 8pt;
             color: #888888;
@@ -133,7 +147,7 @@
         }
 
         /* ─── SKILLS ─────────────────────────────────────────── */
-        .skills-table { width: 100%; border-collapse: collapse; }
+        .skills-table { width: 100%; border-collapse: collapse; page-break-inside: avoid; }
         .skills-table td { vertical-align: top; padding: 3px 0; }
         .skill-label {
             font-size: 9pt;
@@ -155,23 +169,6 @@
         .lang-name  { font-size: 10pt; font-weight: bold; color: #1a1a2e; }
         .lang-level { font-size: 8.5pt; color: #888888; }
 
-        /* ─── FOOTER ─────────────────────────────────────────── */
-        .footer-area {
-            margin-top: 18px;
-            padding-top: 8px;
-            border-top: 2pt solid #1a1a2e;
-        }
-        .footer-byline {
-            text-align: right;
-            font-size: 8.5pt;
-            color: #888888;
-            line-height: 1.8;
-        }
-        .footer-byline strong { color: #1a1a2e; font-size: 9.5pt; }
-        @page {
-            margin: 54pt 54pt 30pt 54pt; /* top right bottom left — bottom makes room for footer */
-            footer: html_cv-footer;       /* binds the footer to every page */
-        }
     </style>
 </head>
 <body>
@@ -238,13 +235,15 @@ mpdf-->
 <div class="section">
     <div class="section-title">Skills</div>
     <hr class="section-rule">
-    <table class="skills-table" cellpadding="0" cellspacing="0">
-        @foreach (\App\Enums\SkillType::values() as $type)
-            @php
-                $varName = str_replace(' ', '_', $type);
-                $items   = $$varName ?? collect();
-            @endphp
-            @if ($items->count())
+    @foreach (\App\Enums\SkillType::values() as $type)
+        @php
+            $varName = str_replace(' ', '_', $type);
+            $items   = $$varName ?? collect();
+        @endphp
+        @if ($items->count())
+            {{-- One table per group: mPDF honours page-break-inside on a table,
+                 not on a row, so this keeps each label with its own list. --}}
+            <table class="skills-table" cellpadding="0" cellspacing="0">
                 <tr>
                     <td class="skill-label">{{ $type }}</td>
                     <td class="skill-value">
@@ -253,9 +252,9 @@ mpdf-->
                         @endforeach
                     </td>
                 </tr>
-            @endif
-        @endforeach
-    </table>
+            </table>
+        @endif
+    @endforeach
 </div>
 
 {{-- ═══════════════════════ PROJECTS ═════════════════════════ --}}
@@ -271,8 +270,13 @@ mpdf-->
                     <span class="proj-status">&middot; ongoing</span>
                 @endif
             </div>
-            @if ($p->description ?: $p->caption)
-                <div class="proj-desc">{{ $p->description ?: $p->caption }}</div>
+            @php $desc = trim((string) ($p->description ?: $p->caption)); @endphp
+            @if ($desc)
+                <div class="proj-desc">
+                    @foreach (preg_split('/\R\s*\R/', $desc) as $paragraph)
+                        <p>{{ $paragraph }}</p>
+                    @endforeach
+                </div>
             @endif
             @if ($p->techmologyStack)
                 <div class="proj-stack"><b>Stack:</b> {{ $p->techmologyStack }}</div>

@@ -70,11 +70,11 @@ class UserHomeController extends Controller
             'mode'           => 'utf-8',
             'format'         => 'A4',
             'margin_top'     => 5,
-            'margin_bottom'  => 20,   // space for footer
-            'margin_left'    => 0,
+            'margin_bottom'  => 23,   // mm — must exceed margin_footer, or body
+            'margin_left'    => 0,    //      text prints over the footer band
             'margin_right'   => 0,
             'margin_header'  => 0,
-            'margin_footer'  => 15,    // footer height
+            'margin_footer'  => 9,    // mm — footer baseline from the paper edge
         ]);
 
         return $pdf->download(str_replace(' ', '-',$data['user']->fullName). '-C.V.pdf');

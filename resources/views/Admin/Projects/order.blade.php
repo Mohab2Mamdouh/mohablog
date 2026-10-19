@@ -150,7 +150,7 @@
                     <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
                     <span class="order-number">{{ $loop->iteration }}</span>
                     <span class="project-name">{{ $project->name }}</span>
-                    <span class="project-tech">{{ $project->techmologyStack }}</span>
+                    <span class="project-tech">{{ $project->tech_stack }}</span>
                     <span class="status-icon"></span>
                 </li>
             @endforeach

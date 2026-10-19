@@ -161,7 +161,7 @@ class CvMarkdownService
         foreach ($projects as $project) {
             $block = ['### ' . $project->name];
 
-            $date = $project->endDate ? $project->endDate->format('M Y') : 'Ongoing';
+            $date = $project->end_date ? $project->end_date->format('M Y') : 'Ongoing';
             $block[] = '*' . $date . '*';
 
             $description = $project->description ?: $project->caption;
@@ -169,16 +169,16 @@ class CvMarkdownService
                 $block[] = $this->clean($description);
             }
 
-            if ($project->techmologyStack) {
-                $block[] = '**Stack:** ' . $this->joinList($project->techmologyStack);
+            if ($project->tech_stack) {
+                $block[] = '**Stack:** ' . $this->joinList($project->tech_stack);
             }
 
             $links = [];
-            if ($project->link) {
-                $links[] = '[Source](' . $project->link . ')';
+            if ($project->github_url) {
+                $links[] = '[Source](' . $project->github_url . ')';
             }
-            if ($project->appURL) {
-                $links[] = '[Live](' . $project->appURL . ')';
+            if ($project->app_url) {
+                $links[] = '[Live](' . $project->app_url . ')';
             }
             if ($links !== []) {
                 $block[] = '**Links:** ' . implode(' · ', $links);

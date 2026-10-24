@@ -99,7 +99,7 @@ class GenerateSeed extends Command
 
                         $this->info("  ✓ {$seederClass} has been run");
                         Seeder::create(['seeder' => $seederFilename]);
-                    } catch (\Exception $e) {
+                    } catch (\Throwable $e) {
                         $this->error("  ✗ Failed to run {$seederClass}: " . $e->getMessage());
                     }
                 }

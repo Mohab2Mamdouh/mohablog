@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => [], // API is called server-to-server only
 
     'allowed_origins_patterns' => [],
 

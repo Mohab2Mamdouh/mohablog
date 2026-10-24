@@ -14,8 +14,8 @@ class ProjectOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order'   => 'required|array',
-            'order.*' => 'required|integer|exists:projects,id',
+            'order'   => 'required|list|max:500',
+            'order.*' => 'required|integer|distinct|exists:projects,id',
         ];
     }
 }

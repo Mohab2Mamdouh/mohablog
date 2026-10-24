@@ -74,7 +74,7 @@ docker exec -it mohablog-app php artisan key:generate
 docker exec -it mohablog-app php artisan migrate
 
 # Import database (optional)
-docker exec -i <mysql-container> mysql -uroot -p<password> mohablog < mohablog.sql
+docker exec -i <mysql-container> mysql -uroot -p<password> mohablog < mohablog.sql   # admin login: mohabmamdouh0706@gmail.com / password (local only)
 
 # Fix permissions
 docker exec -it mohablog-app chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache

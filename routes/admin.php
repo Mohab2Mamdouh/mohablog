@@ -54,7 +54,7 @@ Route::prefix('skills')->name('skills.')->controller(SkillsController::class)->g
     Route::post('/{id}/update', 'update')->name('update');
 
     // Delete Skill
-    Route::get('/{id}/delete', 'destroy')->name('delete');
+    Route::delete('/{id}', 'destroy')->name('delete');
 });
 
 
@@ -72,7 +72,7 @@ Route::prefix('projects')->name('projects.')->controller(ProjectController::clas
     Route::post('/{id}/update', 'update')->name('update');
 
     // Delete Project
-    Route::get('/{id}/delete', 'destroy')->name('delete');
+    Route::delete('/{id}', 'destroy')->name('delete');
 
     // Order Projects
     Route::get('/order', 'order')->name('order');
@@ -96,7 +96,7 @@ Route::prefix('works')->name('works.')->controller(WorkController::class)->group
     Route::post('/{id}/update', 'update')->name('update');
 
     // Delete Work Experience
-    Route::get('/{id}/delete', 'destroy')->name('delete');
+    Route::delete('/{id}', 'destroy')->name('delete');
 });
 
 
@@ -114,7 +114,7 @@ Route::prefix('speaking-language')->name('langs.')->controller(LanguageControlle
     Route::post('/{id}/update', 'update')->name('update');
 
     // Delete Speaking Language
-    Route::get('/{id}/delete', 'destroy')->name('delete');
+    Route::delete('/{id}', 'destroy')->name('delete');
 });
 
 Route::prefix('image-processing')->name('image-processing.')->controller(ImageProcessingController::class)->group(function ()

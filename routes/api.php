@@ -11,9 +11,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/token', [AuthController::class, 'token'])->middleware('throttle:5,1');
 
-Route::middleware('auth:sanctum')->name('api.')->group(function ()
+Route::pattern('id', '[0-9]+');
+Route::pattern('project', '[0-9]+');
+Route::pattern('skill', '[0-9]+');
+Route::pattern('work_exp', '[0-9]+');
+Route::pattern('language', '[0-9]+');
+
+Route::middleware(['auth:sanctum', 'throttle:120,1'])->name('api.')->group(function ()
 {
     Route::delete('/token', [AuthController::class, 'revoke']);
+    Route::delete('/tokens', [AuthController::class, 'revokeAll']);
 
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::put('/profile', [ProfileController::class, 'update']);

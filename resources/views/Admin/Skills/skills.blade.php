@@ -256,14 +256,14 @@
             <div class="card-body text-danger">
                 <h5 class="card-title">{{ __('Delete the project "') . $skills[$i]->languageName . '"?' }}</h5>
                 <p class="card-text">
-                    <a href="{{ route('skills.delete', ['id' => $skills[$i]->id]) }}" class="card-link">{{ __('Delete') }}</a>
+                    <form method="POST" action="{{ route('skills.delete', ['id' => $skills[$i]->id]) }}" style="display: inline">@csrf @method('DELETE')<button type="submit" class="card-link btn btn-link p-0 align-baseline">{{ __('Delete') }}</button></form>
                     <a href="#" class="card-link cancel" onclick="closeForm{{ $i }}()">{{ __('Cancel') }}</a>
                 </p>
             </div>
         </div>
     </div>
     <script>
-        let overlay = $('.overlay');
+        var overlay = $('.overlay'); // var: this script repeats once per item
         overlay.css('height', $('body').css('height'));
         function openForm{{ $i }}() {
             for (let index = 0; index < {{count($skills)}}; index++) {

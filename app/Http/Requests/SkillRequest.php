@@ -17,7 +17,7 @@ class SkillRequest extends FormRequest
         return [
             'languageName' => 'required|string',
             'type'         => 'required|in:' . implode(',', SkillType::values()),
-            'main'         => 'nullable',
+            'main'         => 'nullable|boolean',
         ];
     }
 }

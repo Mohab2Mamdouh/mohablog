@@ -49,51 +49,54 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Optimize Clear Route
-Route::get('/artisan/optimize-clear', function () {
-    try {
-        Artisan::call('optimize:clear');
-        return response()->json([
-            'status' => 'success',
-            'output' => Artisan::output()
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ], 500);
-    }
-});
+// Maintenance routes: logged-in admin only.
+Route::middleware('auth')->group(function () {
+    // Optimize Clear Route
+    Route::get('/artisan/optimize-clear', function () {
+        try {
+            Artisan::call('optimize:clear');
+            return response()->json([
+                'status' => 'success',
+                'output' => Artisan::output()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    });
 
-// Route Clear Route tets
-Route::get('/artisan/route-clear', function () {
-    try {
-        Artisan::call('route:clear');
-        return response()->json([
-            'status' => 'success',
-            'output' => Artisan::output()
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ], 500);
-    }
-});
+    // Route Clear Route tets
+    Route::get('/artisan/route-clear', function () {
+        try {
+            Artisan::call('route:clear');
+            return response()->json([
+                'status' => 'success',
+                'output' => Artisan::output()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    });
 
-// cache Clear
-Route::get('/artisan/cache-clear', function () {
-    try {
-        Artisan::call('cache:clear');
-        return response()->json([
-            'status' => 'success',
-            'output' => Artisan::output()
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ], 500);
-    }
+    // cache Clear
+    Route::get('/artisan/cache-clear', function () {
+        try {
+            Artisan::call('cache:clear');
+            return response()->json([
+                'status' => 'success',
+                'output' => Artisan::output()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    });
 });
 

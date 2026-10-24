@@ -5,6 +5,7 @@ namespace Database\Seeders\RunningSeeder;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 return new class extends Seeder
 {
@@ -24,7 +25,7 @@ return new class extends Seeder
             'email'           => 'mohabmamdouh0706@gmail.com',
             'address'         => 'El Slam, Cairo, Egypt',
             'profileImage'    => 'Mohab.jpg',
-            'password'        => Hash::make('M01090483647'),
+            'password'        => Hash::make(env('ADMIN_PASSWORD') ?: Str::random(32)),
             'expYear'         => '2',
             'currentPosition' => 'Backend Developer PHP/Laravel',
             'profile'         => 'I am a Backend Developer specializing in PHP and Laravel with experience in building scalable web applications and microservices-based systems. I have worked on maintaining and improving CRM platforms, fixing legacy issues, and developing new system versions with better architecture and performance.

@@ -639,9 +639,13 @@
             <h5>{{ __('Delete Project?') }}</h5>
             <p style="color: #64748b;">{{ __('Are you sure you want to delete "') . $project->name . '"? This action cannot be undone.' }}</p>
             <div class="delete-modal-actions">
-                <a href="{{ route('projects.delete', ['id' => $project->id]) }}" class="btn-confirm-delete">
-                    <i class="fas fa-trash"></i> {{ __('Delete') }}
-                </a>
+                <form method="POST" action="{{ route('projects.delete', ['id' => $project->id]) }}" style="display: contents">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-confirm-delete" style="border: none; cursor: pointer; font: inherit">
+                        <i class="fas fa-trash"></i> {{ __('Delete') }}
+                    </button>
+                </form>
                 <a href="#" class="btn-cancel" onclick="closeDeleteForm({{ $loop->index }}); return false;">
                     {{ __('Cancel') }}
                 </a>
